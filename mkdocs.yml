@@ -130,7 +130,7 @@ extra:
 
 # Repository
 repo_name: f5se/cis-c-docs
-repo_url: https://github.com/f5se/cis-c-docs.git
+repo_url: https://github.com/f5se/cis-c-docs
 
 # Copyright
 copyright: Copyright &copy; 2022 F5 CIS-C
