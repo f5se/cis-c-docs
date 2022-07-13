@@ -1,0 +1,136 @@
+site_name: CIS-C 在线文档
+extra_css:
+  - stylesheets/extra.css
+
+theme:
+  name: material
+  highlightjs: true
+  #language: zh
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.top
+    - toc.follow
+    - navigation.tracking
+    - content.code.annotate
+    - content.tooltips
+    - search.highlight
+    - search.share
+    - search.suggest
+
+
+# Extensions
+markdown_extensions:
+  - abbr
+  - admonition
+  - fenced_code
+  - attr_list
+  - def_list
+  - footnotes
+  - meta
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+      emoji_index: !!python/name:materialx.emoji.twemoji
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink:
+      repo_url_shorthand: true
+      user: squidfunk
+      repo: mkdocs-material
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+
+nav:
+  - 主页: index.md
+  - 版本发布: Release-notes/index.md
+  - 快速入门:
+    - 准备工作: quick-start/index.md
+    - 下载与安装: quick-start/installation.md
+    - 卸载: quick-start/uninstall.md
+  - 产品架构:
+    - 整体架构: Architecture/index.md
+    - 启动参数: Architecture/parameters.md
+    - AS3参考: Architecture/as3.md  
+  - 场景与配置:
+    - HTTP业务发布: Use-Cases/http.md
+    - HTTPS业务发布: Use-Cases/https.md
+    - TCP业务发布: Use-Cases/tcp.md
+    - UDP业务发布: Use-Cases/udp.md
+    - FTP业务发布: Use-Cases/ftp.md
+    - Hub业务发布: Use-Cases/hub.md
+    - UDP业务发布: Use-Cases/l4.md
+    - UDP业务发布: Use-Cases/ipv6.md
+  - 运维与排错: 
+    - 常见问题: Operation-and-troubleshooting/ki.md
+    - 迁移: Operation-and-troubleshooting/migration.md
+  - 支持与联系: Support-and-contact/index.md
+
+plugins:
+  - search:
+      separator: '[\s\u200b\-]'
+  - git-revision-date-localized:
+      type: datetime
+      timezone: Asia/Shanghai
+      enable_creation_date: true
+      locale: en
+      fallback_to_build_date: true
+  - minify:
+      minify_html: true
+      htmlmin_opts:
+        remove_comments: true
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/squidfunk
+    - icon: fontawesome/brands/gitter
+      link: https://gitter.im/squidfunk/mkdocs-material
+    - icon: fontawesome/brands/docker
+      link: https://hub.docker.com/r/squidfunk/mkdocs-material/
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/mkdocs-material/
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/squidfunk
+
+# Repository
+repo_name: f5devcentral/container-egress-service
+repo_url: https://github.com/f5devcentral/container-egress-service
+
+# Copyright
+copyright: Copyright &copy; 2022 F5 CIS-C
