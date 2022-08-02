@@ -1,22 +1,3 @@
 # 产品架构介绍
 
-欢迎使用CIS-C。CIS-C是一款借助F5实现容器平台（k8s）
-
-## Commands
-
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
-
-## Project layout
-
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
-
-这里是代码块
-```
-#/usr/bin/sh
-```
+F5 CIS-C程序监控K8s中Configmap（包含AS3模板格式的交付配置）和Endpoints资源（包含客户应用服务信息），将其转换并下发为BIG-IP上的应用交付能力。之后，BIG-IP作为客户的应用服务入口，提供L4-L7的业务及流量的管控。

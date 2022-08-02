@@ -1,22 +1,3 @@
 # 主页
 
-欢迎使用CIS-C。CIS-C是一款借助F5实现容器平台（k8s）
-
-## Commands
-
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
-
-## Project layout
-
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
-
-这里是代码块
-```
-#/usr/bin/sh
-```
+欢迎使用CIS-C。F5 CIS-C（Container Ingress Service for China Market, 镜像名称：k8s-bigip-ctlr-c）是一款应用交付控制器软件，它是F5 CIS(k8s-bigip-ctlr: https://clouddocs.f5.com/containers/latest) 的性能改进版本，功能上仅关注ConfigMap资源类型。它将BIG-IP应用交付能力集成到kubernetes技术栈的云环境中。使用F5 CIS-C程序，客户可以灵活的、自动化的创建、变更应用或者服务入口策略。
