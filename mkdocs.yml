@@ -90,12 +90,12 @@ nav:
   - 场景与配置:
     - HTTP业务发布: Use-Cases/http.md
     - HTTPS业务发布: Use-Cases/https.md
-    - TCP业务发布: Use-Cases/tcp.md
-    - UDP业务发布: Use-Cases/udp.md
+    - TCP(proxy)业务发布: Use-Cases/tcp.md
+    - UDP(proxy)业务发布: Use-Cases/udp.md
     - FTP业务发布: Use-Cases/ftp.md
-    - Hub业务发布: Use-Cases/hub.md
-    - UDP业务发布: Use-Cases/l4.md
-    - UDP业务发布: Use-Cases/ipv6.md
+    - Hub模式发布: Use-Cases/hub.md
+    - L4模式发布: Use-Cases/l4.md
+    - IPV6发布: Use-Cases/ipv6.md
   - 运维与排错: 
     - 常见问题: Operation-and-troubleshooting/ki.md
     - 迁移: Operation-and-troubleshooting/migration.md
