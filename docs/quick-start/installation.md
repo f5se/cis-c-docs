@@ -1,6 +1,6 @@
 # 下载与安装
 
-安装F5 CIS-C。 参考下述yaml文件。按需求修改image版本、等参数信息（详情参考启动参数列表）。kubectl create -f my-deployment.yaml。
+安装F5 CIS-C。 参考下述yaml文件。按需求修改image版本、等参数信息（详情参考[启动参数列表](/Architecture/parameters/)）。kubectl create -f my-deployment.yaml。
 ```
 apiVersion: apps/v1
 kind: Deployment

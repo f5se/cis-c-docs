@@ -82,6 +82,7 @@ nav:
   - 快速入门:
     - 准备工作: quick-start/index.md
     - 下载与安装: quick-start/installation.md
+    - Prometheus集成: quick-start/prometheus.md
     - 卸载: quick-start/uninstall.md
   - 产品架构:
     - 整体架构: Architecture/index.md
