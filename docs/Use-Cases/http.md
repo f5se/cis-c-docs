@@ -1,7 +1,7 @@
-# 标准HTTP业务发布范例
+## 1.标准HTTP业务发布范例
 
 
-## 场景描述
+### 场景描述
 
 标准HTTP业务发布
 
@@ -11,7 +11,7 @@ persistenceMethods为cookie，意思默认会话保持是cookie
 VS类型为standard
 默认会使用http profile
 
-## 参考yaml
+### 参考yaml
 
 ~~~
 kind: ConfigMap
@@ -63,7 +63,7 @@ data:
     }
 ~~~
 
-## 部署结果
+### 部署结果
 
 ~~~
 list ltm virtual test005/app_svc_vs1 
@@ -99,11 +99,11 @@ ltm virtual test005/app_svc_vs1 {
 
 
 
-# 配置virtual address属性范例
+## 2.配置virtual address属性范例
 ## 场景描述
 配置virtual address对象, arp enable no， virtual server 引用该对象
 
-## 参考yaml
+### 参考yaml
 ~~~
 kind: ConfigMap
 apiVersion: v1
@@ -157,7 +157,7 @@ data:
     }
 ~~~    
 
-## 部署结果
+###  部署结果
 
 ~~~
 
@@ -203,7 +203,7 @@ ltm virtual-address 172.16.142.178 {
 }
 ~~~
 
-# 配置TCP profile范例
+# 3.配置TCP profile范例
 ## 场景描述
 配置TCP profile，自定义超时时间
 
