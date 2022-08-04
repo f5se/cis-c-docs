@@ -4,36 +4,43 @@
 
   - 创建VXLAN
 
-    `create net tunnels vxlan /Common/fl-vxlan {
+    ```
+    create net tunnels vxlan /Common/fl-vxlan {
         app-service none
         flooding-type none
         port 8472
-    }`
+    }
+    ```
 
   - 创建VXLAN Tunnel 及VTEP IP
 
-    `create net tunnels tunnel /Common/fl-tunnel {
+    ```
+    create net tunnels tunnel /Common/fl-tunnel {
         key 1
         local-address 10.250.16.127
         profile /Common/fl-vxlan
-    }`
+    }
+    ```
 
     注意：*使用BIG-IP实际traffic 接口IP替换 10.250.16.127*
 
   - 创建VXLAN Tunnel SelfIP
 
-    `create net self /Common/fl-vxlan-selfip {
+    ```
+    create net self /Common/fl-vxlan-selfip {
         address 10.42.20.1/16
         allow-service all
         traffic-group /Common/traffic-group-local-only
         vlan /Common/fl-tunnel
-    }`
+    }
+    ```
 
     注意这里的10.42.20.1/16的前两位通过指令`kubectl get node -o yaml | grep podCIDR`获取，第3位任选数值不与已有node重复即可。
 
   - 创建本地VLAN及SelfIP
 
-    `create net vlan /Common/vlan-traffic {
+    ```
+    create net vlan /Common/vlan-traffic {
         interfaces {
             1.1 { }
         }
@@ -42,13 +49,16 @@
             sampling-rate-global no
         }
         tag 4094
-    }`
+    }
+    ```
 
-    `create net self /Common/vlan-traffic {
+    ```
+    create net self /Common/vlan-traffic {
         address 10.250.16.127/24
         traffic-group /Common/traffic-group-local-only
         vlan /Common/vlan-traffic
-    }`
+    }
+    ```
 
     注意：*使用BIG-IP实际traffic 接口IP替换 10.250.16.127*
 
@@ -72,11 +82,13 @@
 
   - 创建BIG-IP登陆密码 (视需要修改用户名,密码以及URL等)
 
-    `kubectl create secret generic bigip-login
+    ```
+    kubectl create secret generic bigip-login
       -n kube-system
       --from-literal=username=admin
       --from-literal=password=mypassword
-      --from-literal=url=https://10.10.10.10:443`
+      --from-literal=url=https://10.10.10.10:443
+    ```
 
     注意：*使用BIG-IP实际url及密码替换示例中的https://10.10.10.10:443及mypassword*
 
@@ -152,7 +164,7 @@
 
 ### 3. Prometheus 监控（可选）
 
-  F5 CIS-C 程序开启了8080端口用于Prometheus收集metrics，详见：https://gitee.com/zongzw/f5-kic/blob/master/deploy/deploy-f5-kic-pod.yaml
+  F5 CIS-C 程序开启了8080端口用于Prometheus收集metrics
 
   ```
     # expose the Prometheus port with NodePort
