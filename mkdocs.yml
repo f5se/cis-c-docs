@@ -101,6 +101,7 @@ nav:
     - 常见问题: Operation-and-troubleshooting/ki.md
     - 迁移: Operation-and-troubleshooting/migration.md
   - 支持与联系: Support-and-contact/index.md
+    - 文档纠错: Support-and-contact/doc-revise.md
 
 plugins:
   - search:
