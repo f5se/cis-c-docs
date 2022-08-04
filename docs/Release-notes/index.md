@@ -2,7 +2,7 @@
 
 ## Release: **2.9.1-20220804**
 
-### Image
+### Docker image
     f5devcentral/k8s-bigip-ctlr-c:2.9.1-20220804
 
 ### Release Notes
@@ -13,6 +13,7 @@
 * 支持k8s CNI类型：Flannel vxlan或其它underlay模式CNI（如Calico路由模式，Kube-ovn underlay模式等），配置细节可参考[这里](/Architecture/parameters/)
 * 支持广泛的k8s版本，如您发现k8s的版本支持问题，请[联系我们](/Support-and-contact/)
 * 暂不支持Openshift
+* 支持x86 CPU。 国产或ARM CPU支持请与我们[联系](/Support-and-contact/)
 
 #### 功能与行为支持
 * 支持通过`namespace`启动参数指定业务发布范围
