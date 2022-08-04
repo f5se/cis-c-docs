@@ -121,7 +121,7 @@ extra:
     - icon: fontawesome/brands/github
       link: https://github.com/f5se/cis-c-docs/
     - icon: fontawesome/brands/docker
-      link: https://hub.docker.com/u/f5devcentral
+      link: https://hub.docker.com/u/f5devcentral/k8s-bigip-ctlr-c
 
 
 # Repository
