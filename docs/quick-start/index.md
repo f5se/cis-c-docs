@@ -1,6 +1,6 @@
 # 准备工作
 
-### 1. BIG-IP 设备 (以下vxlan相关步骤仅针对flannel模式。如果为calico等模式，则不需要该步骤)
+### 1. BIG-IP 设备 (以下vxlan相关步骤仅针对flannel模式。如果为calico等underlay模式，则不需要该步骤)
 
   - 创建VXLAN
 
