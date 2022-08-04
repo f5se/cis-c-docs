@@ -22,6 +22,7 @@
 * 支持默认服务端口绑定：当configmap应用配置中无端口指定时，自动选择服务端口
 * 支持增量处理，应用交付配置下发速度快
 * 支持BIG-IP上扩展应用交付能力包括以下配置对象（及其子参数配置项），支持用户充分发挥BIG-IP能力。更多场景可参考[这里](/Use-Cases/http/)：
+```
   * virtual
   * virtual-address
   * snatpool
@@ -30,7 +31,7 @@
   * profile: tcp ftp udp http clientssl oneconnect
   * persist: cookie source_addr
   * iRules
-
+```
 * 支持IPv64转换,即对外发布IPv6访问IP，集群内使用IPv4。亦支持集群内IPv6
 
 #### 运维与升级支持
