@@ -203,11 +203,11 @@ ltm virtual-address 172.16.142.178 {
 }
 ~~~
 
-# 3.配置TCP profile范例
-## 场景描述
+## 3.配置TCP profile范例
+### 场景描述
 配置TCP profile，自定义超时时间
 
-## 参考yaml
+### 参考yaml
 ~~~
 kind: ConfigMap
 apiVersion: v1
@@ -268,7 +268,7 @@ data:
     }
 ~~~    
 
-## 部署结果
+### 部署结果
 
 ~~~
 
@@ -308,11 +308,11 @@ list ltm profile tcp test005/customTCPProfile | grep idle-timeout
 
 ~~~
 
-# 配置HTTP profile范例
-## 场景描述
+## 4.配置HTTP profile范例
+### 场景描述
 配置HTTP profile，开启XFF
 
-## 参考yaml
+### 参考yaml
 ~~~
 kind: ConfigMap
 apiVersion: v1
@@ -373,7 +373,7 @@ data:
     }
 ~~~    
 
-## 部署结果
+### 部署结果
 
 ~~~
 
@@ -415,11 +415,11 @@ list ltm profile http test006/customHTTPProfile | grep "insert-xforwarded-for"
 
 
 
-# 配置cookie会话保持，cookie加密范例
-## 场景描述
+## 5.配置cookie会话保持，cookie加密范例
+### 场景描述
 配置cookie会话保持，对F5 insert的cookie进行加密
 
-## 参考yaml
+### 参考yaml
 ~~~
 kind: ConfigMap
 apiVersion: v1
@@ -484,7 +484,7 @@ data:
     }
 ~~~    
 
-## 部署结果
+### 部署结果
 
 ~~~
 
@@ -542,11 +542,11 @@ ltm persistence cookie test006/cookie_encryption {
 
 
 
-# 配置snat pool范例
+## 6.配置snat pool范例
 ## 场景描述
 配置snat pool范例
 
-## 参考yaml
+### 参考yaml
 ~~~
 kind: ConfigMap
 apiVersion: v1
@@ -610,7 +610,7 @@ data:
     }
 ~~~    
 
-## 部署结果
+### 部署结果
 
 ~~~
 
@@ -657,11 +657,11 @@ ltm snatpool test006/snatpool-3 {
 
 ~~~
 
-# 配置one connect范例
-## 场景描述
+## 7.配置one connect范例
+### 场景描述
 配置one connect范例
 
-## 参考yaml
+### 参考yaml
 ~~~
 kind: ConfigMap
 apiVersion: v1
@@ -722,7 +722,7 @@ data:
     }
 ~~~    
 
-## 部署结果
+### 部署结果
 
 ~~~
 
@@ -771,11 +771,11 @@ ltm profile one-connect test006/customOne {
 
 ~~~
 
-# 配置VS 链接限制， immediate action on svc down范例
+## 8.配置VS 链接限制， immediate action on svc down范例
 ## 场景描述
 配置VS 链接限制， immediate action on svc down
 
-## 参考yaml
+### 参考yaml
 ~~~
 kind: ConfigMap
 apiVersion: v1
@@ -831,7 +831,7 @@ data:
     }
 ~~~    
 
-## 部署结果
+### 部署结果
 
 ~~~
 
@@ -870,11 +870,11 @@ ltm virtual test006/app_svc_vs6 {
 
 
 
-# 配置VS关联多个iRules范例
-## 场景描述
+## 9.配置VS关联多个iRules范例
+### 场景描述
 配置VS关联多个iRules
 
-## 参考yaml
+### 参考yaml
 ~~~
 kind: ConfigMap
 apiVersion: v1
@@ -937,7 +937,7 @@ data:
     }
 ~~~    
 
-## 部署结果
+### 部署结果
 
 ~~~
 
@@ -993,11 +993,11 @@ when CLIENT_ACCEPTED {
 }
 ~~~
 
-# 配置多个monitor范例
+## 10.配置多个monitor范例
 ## 场景描述
 pool中配置多个monitor
 
-## 参考yaml
+### 参考yaml
 ~~~
 kind: ConfigMap
 apiVersion: v1
@@ -1076,7 +1076,7 @@ data:
 
 ~~~    
 
-## 部署结果
+### 部署结果
 
 ~~~
 list ltm pool test006/pool3 
@@ -1088,65 +1088,71 @@ ltm pool test006/pool3 {
 }
 ~~~
 
-# 常用irules范例
+## 11.常用irules范例
 
 
-## 根据URI进行转发
-            "irule_k8s-cib001-svc-1": {
-              "class": "iRule",
-              "remark": "switch between pools",
-              "iRule": "when HTTP_REQUEST {\n if { [HTTP::uri] starts_with \"/coffee\" } {\n pool k8s-cib001-svc-1-pool-8080 \n } else { \n pool k8s-cib001-app-svc-4-pool-8080 \n }\n  \n}" 
-            },
-其中if { [HTTP::uri] starts_with \"/coffee\" }表示新的版本中以/coffee目录开头的都会分往新版本的服务器上，{\n pool k8s-cib001-svc-1-pool-8080 \n }其中的pool是新版本服务器的地址池
+### 根据URI进行转发
+
+```
+"irule_k8s-cib001-svc-1": {
+  "class": "iRule",
+  "remark": "switch between pools",
+  "iRule": "when HTTP_REQUEST {\n if { [HTTP::uri] starts_with \"/coffee\" } {\n pool k8s-cib001-svc-1-pool-8080 \n } else { \n pool k8s-cib001-app-svc-4-pool-8080 \n }\n  \n}" 
+},
+```
+其中`if { [HTTP::uri] starts_with \"/coffee\" }`表示新的版本中以/coffee目录开头的都会分往新版本的服务器上，`{\n pool k8s-cib001-svc-1-pool-8080 \n }`其中的pool是新版本服务器的地址池
 如果不是以/coffee开头的都会分往旧版本的服务器上
 
 
-## 根据客户端ip进行转发
-            "irule_k8s-cib001-svc-1": {
-              "class": "iRule",
-              "remark": "switch between pools",
-              "iRule": "when CLIENT_ACCEPTED {\n  if {[IP::addr [IP::client_addr] equals 192.168.5.30] or [IP::addr [IP::client_addr] equals 192.168.5.0/24]} {\n    pool k8s-cib001-svc-1-pool-8080 \n  } else {\n    pool k8s-cib001-app-svc-4-pool-8080 \n  }\n}"
-            },
-
-其中当终端地址为192.168.5.30或者属于192.168.5.0/24的网段，该请求流量分给pool k8s-cib001-svc-1-pool-8080 
-其它的情况流量均分往pool k8s-cib001-app-svc-1-pool-8080
-注意一下如上irule的写法，\n表示换行
-
-
-## 根据cookie进行转发
-
-            "irule_k8s-cib001-svc-1": {
-              "class": "iRule",
-              "remark": "switch between pools",
-              "iRule": "when HTTP_REQUEST {\n  if {[HTTP::cookie exists \"Canary\"] and [HTTP::cookie value \"Canary\"] equals \"true\"} {\n    pool k8s-cib001-svc-1-pool-8080 \n  } else {\n    pool k8s-cib001-app-svc-4-pool-8080 \n  }\n}"
-            },
-其中如果可以存在cookie为Canary，而且对应该cookie值为true，流量分给pool k8s-cib001-svc-1-pool-8080 
-其它的所有流量分往pool k8s-cib001-app-svc-1-pool-8080
-注意一下如上irule的写法，\n表示换行
-
-
-
-## 根据http header进行转发
-            "irule_k8s-cib001-svc-1": {
-              "class": "iRule",
-              "remark": "switch between pools",
-              "iRule":  "when HTTP_REQUEST {\n  if {[HTTP::header exists \"Canary\"] and [HTTP::header values \"Canary\"] equals \"true\"} {\n    pool k8s-cib001-svc-1-pool-8080 \n  } else {\n    pool k8s-cib001-app-svc-4-pool-8080 \n  }\n}"
-            },
-其中http header中如果存在\"Canary\"，且对应的value值为true，流量分给pool k8s-cib001-svc-1-pool-8080  
-其它情况流量分给k8s-cib001-app-svc-1-pool-8080
-注意一下如上irule的写法，\n表示换行
-
-
-## 根据比例进行灰度
-            "irule_k8s-cib001-svc-1": {
-              "class": "iRule",
-              "remark": "switch between pools",
-              "iRule": "when CLIENT_ACCEPTED {\n  if {[expr {[expr {0xffffffff & [crc32 [IP::client_addr]]}] % 100}] < 25} {\n    pool k8s-cib001-svc-1-pool-8080 \n  } else {\n    pool k8s-cib001-app-svc-4-pool-8080 \n  }\n}"
-            },
-其中< 25 是 25%的流量分给pool k8s-cib001-svc-1-pool-8080 
-75%的流量分往pool k8s-cib001-app-svc-1-pool-8080
-注意一下如上irule的写法，\n表示换行
-
-
-
+### 根据客户端ip进行转发
 ```
+"irule_k8s-cib001-svc-1": {
+  "class": "iRule",
+  "remark": "switch between pools",
+  "iRule": "when CLIENT_ACCEPTED {\n  if {[IP::addr [IP::client_addr] equals 192.168.5.30] or [IP::addr [IP::client_addr] equals 192.168.5.0/24]} {\n    pool k8s-cib001-svc-1-pool-8080 \n  } else {\n    pool k8s-cib001-app-svc-4-pool-8080 \n  }\n}"
+},
+```
+
+其中当终端地址为192.168.5.30或者属于192.168.5.0/24的网段，该请求流量分给`pool k8s-cib001-svc-1-pool-8080`
+其它的情况流量均分往`pool k8s-cib001-app-svc-1-pool-8080`
+注意一下如上irule的写法，`\n`表示换行
+
+
+### 根据cookie进行转发
+```
+"irule_k8s-cib001-svc-1": {
+  "class": "iRule",
+  "remark": "switch between pools",
+  "iRule": "when HTTP_REQUEST {\n  if {[HTTP::cookie exists \"Canary\"] and [HTTP::cookie value \"Canary\"] equals \"true\"} {\n    pool k8s-cib001-svc-1-pool-8080 \n  } else {\n    pool k8s-cib001-app-svc-4-pool-8080 \n  }\n}"
+},
+```
+其中如果可以存在cookie为Canary，而且对应该cookie值为true，流量分给`pool k8s-cib001-svc-1-pool-8080` 
+其它的所有流量分往`pool k8s-cib001-app-svc-1-pool-8080`
+注意一下如上irule的写法，`\n`表示换行
+
+
+
+### 根据http header进行转发
+```
+"irule_k8s-cib001-svc-1": {
+  "class": "iRule",
+  "remark": "switch between pools",
+  "iRule":  "when HTTP_REQUEST {\n  if {[HTTP::header exists \"Canary\"] and [HTTP::header values \"Canary\"] equals \"true\"} {\n    pool k8s-cib001-svc-1-pool-8080 \n  } else {\n    pool k8s-cib001-app-svc-4-pool-8080 \n  }\n}"
+},
+```
+其中http header中如果存在\"Canary\"，且对应的value值为true，流量分给`pool k8s-cib001-svc-1-pool-8080`  
+其它情况流量分给`k8s-cib001-app-svc-1-pool-8080`
+注意一下如上irule的写法，`\n`表示换行
+
+
+### 根据比例进行灰度
+```
+"irule_k8s-cib001-svc-1": {
+  "class": "iRule",
+  "remark": "switch between pools",
+  "iRule": "when CLIENT_ACCEPTED {\n  if {[expr {[expr {0xffffffff & [crc32 [IP::client_addr]]}] % 100}] < 25} {\n    pool k8s-cib001-svc-1-pool-8080 \n  } else {\n    pool k8s-cib001-app-svc-4-pool-8080 \n  }\n}"
+},
+```
+其中< 25 是 25%的流量分给`pool k8s-cib001-svc-1-pool-8080` 
+75%的流量分往`pool k8s-cib001-app-svc-1-pool-8080`
+注意一下如上irule的写法，`\n`表示换行
