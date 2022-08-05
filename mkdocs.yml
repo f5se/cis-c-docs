@@ -99,8 +99,7 @@ nav:
   - 运维与排错: 
     - 常见问题: Operation-and-troubleshooting/ki.md
     - 迁移: Operation-and-troubleshooting/migration.md
-  - 支持与联系: Support-and-contact/index.md
-    - 文档纠错: Support-and-contact/index.md
+  - 支持与联系: Supportandcontact/index.md
 
 plugins:
   - search:
