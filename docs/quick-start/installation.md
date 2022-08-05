@@ -19,13 +19,10 @@ spec:
         app: k8s-bigip-ctlr-c-pod
     spec:
       serviceAccountName: k8s-bigip-ctlr
-      nodeSelector:
-        node-role.kubernetes.io/controlplane: "true"
-        # node-role.kubernetes.io/master: "true"
       containers:
         # kubectl logs -f deployment/k8s-bigip-ctlr-c -c k8s-bigip-ctlr-c-pod -n kube-system
         - name: k8s-bigip-ctlr-c-pod
-          image: "zongzw/k8s-bigip-ctlr-c:2.9.01-20220726"
+          image: "f5devcentral/k8s-bigip-ctlr-c:2.9.1-20220804"
           imagePullPolicy: IfNotPresent
           env:
             - name: BIGIP_USERNAME
@@ -49,7 +46,9 @@ spec:
             "--bigip-password=$(BIGIP_PASSWORD)",
             "--bigip-url=$(BIGIP_URL)",
             "--log-level=debug",
-            "--flannel-name=fl-tunnel",
+            # if flannel-name is set, meanning trying to use flannel mode
+            # and customer needs to create related tunnel on BIGIP first.
+            # "--flannel-name=fl-tunnel",
             # "--namespace=default",
             # "--namespace=namespace-1",
             # "--namespace-label=resource.zone=deployment",
@@ -57,25 +56,15 @@ spec:
             "--ignore-service-port"
           ]
 
-        # validate with: curl http://localhost:8081/validate
         - name: as3-parser
-          image: "zongzw/as3-parser:latest"
+          image: "f5devcentral/cis-c-as3-parser:latest"
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8081
               protocol: TCP
 
-        # kubectl exec -it deployment/k8s-bigip-ctlr-c -c debug-pod -n kube-system -- bash
-        - name: debug-pod
-          image: "zongzw/k8s-bigip-ctlr-c-debug-host:latest"
-          imagePullPolicy: IfNotPresent
-          command:
-            - /bin/bash
-            - -c
-          args:
-            - while true; do sleep 1; done
 --- 
-
+# the following service is optional.
 # expose the Prometheus port with NodePort
 apiVersion: v1
 kind: Service
