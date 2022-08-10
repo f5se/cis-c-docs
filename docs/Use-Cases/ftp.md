@@ -6,7 +6,7 @@
 FTP业务发布
 
 示例中创建了定制化的FTP profile：service_name_ftpprofile .
-请视需要需要相关参数。
+请视需要修改相关参数。
 
 ### 参考yaml
 
