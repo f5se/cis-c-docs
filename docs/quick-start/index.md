@@ -146,7 +146,7 @@
     subjects:
     - apiGroup: ""
       kind: ServiceAccount
-      name: bigip-ctlr
+      name: k8s-bigip-ctlr
       namespace: kube-system
     ```
 
