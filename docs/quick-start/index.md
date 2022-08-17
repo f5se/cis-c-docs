@@ -112,28 +112,45 @@
 
     将以上内容放入secret.yaml文件中, 使用 `kubectl apply -f secret.yaml`命令执行文件内容。
 
-  - 创建rolebinding
+  - 创建 Cluster Role 和 Cluster Role Binding
 
-    `kubectl create clusterrolebinding k8s-bigip-ctlr-clusteradmin --clusterrole=cluster-admin --serviceaccount=kube-system:k8s-bigip-ctlr`
-
-    或者使用以下yaml创建：
+    参考以下yaml例子创建。可根据实际需要修改rbac权限范围。
 
     ```
+    kind: ClusterRole
     apiVersion: rbac.authorization.k8s.io/v1
-    kind: ClusterRoleBinding
     metadata:
-      name: k8s-bigip-ctlr-clusteradmin
+      name: bigip-ctlr-clusterrole
+    rules:
+    - apiGroups: ["", "extensions", "networking.k8s.io"]
+      resources: ["nodes", "services", "endpoints", "namespaces", "ingresses", "pods", "ingressclasses"]
+      verbs: ["get", "list", "watch"]
+    - apiGroups: ["", "extensions", "networking.k8s.io"]
+      resources: ["configmaps", "events", "ingresses/status", "services/status"]
+      verbs: ["get", "list", "watch", "update", "create", "patch"]
+    - apiGroups: ["", "extensions"]
+      resources: ["secrets"]
+      verbs: ["get", "list", "watch"]
+
+    ---
+
+    kind: ClusterRoleBinding
+    apiVersion: rbac.authorization.k8s.io/v1
+    metadata:
+      name: bigip-ctlr-clusterrole-binding
+      namespace: kube-system
     roleRef:
       apiGroup: rbac.authorization.k8s.io
       kind: ClusterRole
-      name: cluster-admin
+      name: bigip-ctlr-clusterrole
     subjects:
-      - kind: ServiceAccount
-        name: k8s-bigip-ctlr
-        namespace: kube-system
+    - apiGroup: ""
+      kind: ServiceAccount
+      name: bigip-ctlr
+      namespace: kube-system
     ```
 
-    将以上内容放入role-binding.yaml文件中, 使用 `kubectl apply -f role-binding.yaml`命令执行文件内容。
+    将以上内容放入rbac.yaml文件中, 使用 `kubectl apply -f rbac.yaml`命令执行文件内容。
 
   - 创建BIG-IP虚拟节点(仅在flannel模式下需要本步骤)
 
