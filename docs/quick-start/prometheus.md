@@ -1,6 +1,6 @@
 # Prometheus集成
 
-Prometheus 是新一代的云原生监控系统，和Kubernetes有着天然的兼容关系，所以在CIS-C项目中，我们首推使用Prometheus作为监控手段实现CIS-C的性能评估。
+Prometheus 是新一代的云原生监控系统，和Kubernetes有着天然的兼容关系，所以在CIS-C项目中，我们首推使用Prometheus，作为监控手段实现CIS-C的性能评估和运行状态收集。
 
 ## 服务器端搭建
 
@@ -90,59 +90,103 @@ Prometheus 的搭建方式有很多种，本文档中展示的是以docker方式
 
 ## 数据数据采集
 
-目前CIS-C收集业务下发过程中各个关键节点的时耗数据，收集代码如下：
+目前CIS-C通过Prometheus收集了业务下发过程中各个关键节点的时耗数据。各个metrics名称及含义如下：
 
-```
-	collectors = PrometheusCollectors{
-		TimeCost: prometheus.NewGaugeVec(
-			prometheus.GaugeOpts{
-				Name: "monitored_resource_timecost",
-				Help: "time cost(in milliseconds) of monitored resources by the k8s & kic & BigIP",
-			},
-			[]string{"request_id", "kind", "name", "operation", "stage"},
-		),
-	}
-```
+* bigip_icontrol_timecost_count： CIS-C下发过程中，发送iControlRest API到BIG-IP数量累计统计
 
-其中各个label的含义如下：
+  其中各个label的含义如下：
 
-* "request_id":
+  * "method":
+
+    REST请求方法：GET POST DELETE PATCH
+
+  * "url":
+
+    BIG-IP url名称，以“/mgmt/tm/..”为前缀。
+
+  例如：
   
-  当前下发请求的ID。下发请求到来后，CIS-C内部会根据操作不同，将请求拆解为不同的类型以不同的步骤执行下发，此ID可以在后续各处理步骤中标识该步骤来自哪个请求，便于累加下发总耗时。
-
-  CIS-C会对每个k8s事件分配独立的request_id。k8s事件包括 configmap/endpoints/service/node/namespace资源的add、update、delete。
-
-* "kind": 
-
-  业务下发后在CIS-C内部的处理类型，包括
-  * 网络处理类：arp, fdb, 
-  * k8s集群资源类：configmap, endpoint, node, service, namespace
-  * BIG-IP配置类：data-group, pool.members, virtualpool
-
-* "name": 
-
-  下发业务对应的k8s资源或BIG-IP配置名称，例如：
-
-  * default/rest-service-http-configmap 为configmap的namespace 和name
-
-  * kube-system/app-svc-2 为 service或者endpoint 的namespace和name
-
-  * app_2_svc_pool 为 BIG-IP上Pool 名称
-
-* "operation":
-
-  业务下发的操作请求，包括
+  ```
+  bigip_icontrol_timecost_count{method="GET",url="/mgmt/tm/ltm/snatpool"} 273
+  ```
   
-  * BIG-IP配置下发时的“deploy”和“delete”
-  * K8s集群事件处理时的“add”，“update” 和“delete”
+  表示CIS-C发送`/mgmt/tm/ltm/snatpool`请求的数量为`273`，这个数字也包括了对某snatpool对象的操作API，例如`DELETE /mgmt/tm/ltm/snatpool/~partitionA~subfolderB~snatpoolC`。
 
-* "stage": 
+* bigip_icontrol_timecost_total： CIS-C下发过程中，发送iControlRest API到BIG-IP耗时累计统计
 
-  业务下发阶段，包括
+  其中各个label的含义如下：
 
-  * “wait”：表示k8s集群事件被CIS-C接受到，在队列中的等待时间。
-  * “pack”：表示从队列中取出预处理的时间，与处理过程是将k8s中的资源转化为BIG-IP可识别的数据结构。
-  * “deploy”：表示CIS-C操控BIG-IP实现下发所用的时间。
+  * "method":
+
+    REST请求方法：GET POST DELETE PATCH
+
+  * "url":
+
+    BIG-IP url名称，以“/mgmt/tm/..”为前缀。
+
+  举例同上，单位为毫秒(ms)。
+
+* pharse_informer_duration_total：CIS-C对接k8s侧程序逻辑部分的耗时总计。
+
+* pharse_packer_duration_total：CIS-C编译转换AS3逻辑部分的耗时总计。
+
+* pharse_ltmworker_duration_total：CIS-C完成LTM资源下发逻辑部分的耗时总计。
+
+* pharse_networker_duration_total：CIS-C完成网络部署逻辑部分的耗时总计。
+
+  计算下发总耗时可以使用以下promsql：`pharse_informer_duration_total + pharse_packer_duration_total + pharse_ltmworker_duration_total`
+  
+  注意，ltmworker和networker 为并发协程，与ltmworker同时执行，计算总耗时时不予计算在内。
+
+* monitored_resource_timecost：CIS-C下发过程中各细粒度操作耗时。
+
+  *此监控指标多用于研发过程中的性能调优。*
+
+  其中各个label的含义如下：
+
+  * "request_id":
+    
+    当前下发请求的ID。下发请求到来后，CIS-C内部会根据操作不同，将请求拆解为不同的类型以不同的步骤执行下发，此ID可以在后续各处理步骤中标识该步骤来自哪个请求，便于累加下发总耗时。
+
+    CIS-C会对每个k8s事件分配独立的request_id。k8s事件包括 configmap/endpoints/service/node/namespace资源的add、update、delete。
+
+  * "kind": 
+
+    业务下发后在CIS-C内部的处理类型，包括
+
+    * 网络处理类：arp, fdb, 
+
+    * k8s集群资源类：configmap, endpoint, node, service, namespace
+
+    * BIG-IP配置类：data-group, pool.members, virtualpool
+
+  * "name": 
+
+    下发业务对应的k8s资源或BIG-IP配置名称，例如：
+
+    * default/rest-service-http-configmap 为configmap的namespace 和name
+
+    * kube-system/app-svc-2 为 service或者endpoint 的namespace和name
+
+    * app_2_svc_pool 为 BIG-IP上Pool 名称
+
+  * "operation":
+
+    业务下发的操作请求，包括
+
+    * BIG-IP配置下发时的“deploy”和“delete”
+
+    * K8s集群事件处理时的“add”，“update” 和“delete”
+
+  * "stage": 
+
+    业务下发阶段，包括
+
+    * “wait”：表示k8s集群事件被CIS-C接受到，在队列中的等待时间。
+
+    * “pack”：表示从队列中取出预处理的时间，与处理过程是将k8s中的资源转化为BIG-IP可识别的数据结构。
+
+    * “deploy”：表示CIS-C操控BIG-IP实现下发所用的时间。
 
 
 ## 性能测试数据及方法
@@ -352,16 +396,29 @@ done
 
 测试脚本执行结束后，就可以在prometheus的UI上查看测试结果了，具体的聚合PromSQL为：
 
-```
-sum(monitored_resource_timecost{instance="10.xx.yy.zz:30080"}) by (request_id)
-```
+* monitored_resource_timecost
 
-此聚合指令以`request_id`划分，将来自`10.xx.yy.zz:30080`的metrics数据加和（`sum`），计算得到各个request的时间耗时情况，如下图所示。
+  ```
+  sum(monitored_resource_timecost{instance="10.xx.yy.zz:30080"}) by (request_id)
+  ```
 
-### 测试结果样例
+  此聚合指令以`request_id`划分，将来自`10.xx.yy.zz:30080`的metrics数据加和（`sum`），计算  得到各个request的时间耗时情况，如下图所示。
 
-![image](./performance-test.png)
 
-图中可以看到耗时分布均在2秒以下，表示每一个k8s事件的处理时间均在2秒下。
+* pharse_*_duration_total
 
-另外，以09:48为分隔，分左右两部分，左侧为创建事件耗时统计，右侧为删除事件耗时统计。
+  ```
+  pharse_informer_duration_total + pharse_packer_duration_total + pharse_ltmworker_duration_total
+  ```
+
+  此聚合命令可以统计CIS-C累计工作时长。
+
+* bigip_icontrol_timecost_count & bigip_icontrol_timecost_total
+
+  ```
+  sum(bigip_icontrol_timecost_count) by(url)
+  sum(bigip_icontrol_timecost_total) by(url)
+  ```
+
+  此聚合命令用于统计iControl REST请求的次数和总耗时，用于评估BIG-IP的下发性能情况。
+  
