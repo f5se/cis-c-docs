@@ -126,15 +126,15 @@ Prometheus 的搭建方式有很多种，本文档中展示的是以docker方式
 
   举例同上，单位为毫秒(ms)。
 
-* pharse_informer_duration_total：CIS-C对接k8s侧程序逻辑部分的耗时总计。
+* phase_informer_duration_total：CIS-C对接k8s侧程序逻辑部分的耗时总计。
 
-* pharse_packer_duration_total：CIS-C编译转换AS3逻辑部分的耗时总计。
+* phase_packer_duration_total：CIS-C编译转换AS3逻辑部分的耗时总计。
 
-* pharse_ltmworker_duration_total：CIS-C完成LTM资源下发逻辑部分的耗时总计。
+* phase_ltmworker_duration_total：CIS-C完成LTM资源下发逻辑部分的耗时总计。
 
-* pharse_networker_duration_total：CIS-C完成网络部署逻辑部分的耗时总计。
+* phase_networker_duration_total：CIS-C完成网络部署逻辑部分的耗时总计。
 
-  计算下发总耗时可以使用以下promsql：`pharse_informer_duration_total + pharse_packer_duration_total + pharse_ltmworker_duration_total`
+  计算下发总耗时可以使用以下promsql：`phase_informer_duration_total + phase_packer_duration_total + phase_ltmworker_duration_total`
   
   注意，ltmworker和networker 为并发协程，与ltmworker同时执行，计算总耗时时不予计算在内。
 
@@ -405,10 +405,10 @@ done
   此聚合指令以`request_id`划分，将来自`10.xx.yy.zz:30080`的metrics数据加和（`sum`），计算  得到各个request的时间耗时情况，如下图所示。
 
 
-* pharse_*_duration_total
+* phase_*_duration_total
 
   ```
-  pharse_informer_duration_total + pharse_packer_duration_total + pharse_ltmworker_duration_total
+  phase_informer_duration_total + phase_packer_duration_total + phase_ltmworker_duration_total
   ```
 
   此聚合命令可以统计CIS-C累计工作时长。
