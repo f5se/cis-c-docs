@@ -18,6 +18,7 @@
 * 优化网络创建、持久化、node删除，以实现性能调优
 * 修复iRule下发时特殊字符 < > & 处理异常
 * 修复发布镜像的安全问题CVE-2022-2097
+* Virtual Server 的 Connection Mirroring 打开或关闭
 * 其他已知问题修复
 
 ## Release: **2.9.1-20220804**
