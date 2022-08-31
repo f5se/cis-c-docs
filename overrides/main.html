@@ -1,5 +1,9 @@
+{% extends "base.html" %}
+
 {% block announce %}
   <a href="/Release-notes/">
-    New Version Just released, Try it now!
+    <span class="twemoji">
+      {% include ".icons/material/message.svg" %} 
+    </span> 新版本已经发布，点击这里立即尝试！
   </a>
 {% endblock %}

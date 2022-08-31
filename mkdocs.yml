@@ -4,6 +4,7 @@ extra_css:
 
 theme:
   name: material
+  custom_dir: overrides
   highlightjs: true
   language: zh
   palette:
@@ -31,6 +32,7 @@ theme:
     - search.highlight
     - search.share
     - search.suggest
+    - announce.dismiss
 
 
 # Extensions
