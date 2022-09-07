@@ -1,8 +1,8 @@
 ## 什么情形下会考虑CIS与CIS-C的混合部署
 
 * 从CIS向CIS-C迁移的过渡阶段
-* 需要继续使用k8s Ingress资源、CIS CRD资源、以及早期的cccl模型下的Configmap资源来进行业务发布，但同时又希望获取更高发布性能时。可使用CIS继续监听Ingress、CRD等资源，对于使用AS3语法的Configmap资源则采用CIS-C来发布
-* 在架构设计上，需要同时支持Ingress，CRD，AS3这三种模式的
+* 需要继续使用k8s Ingress资源、CIS CRD资源、以及早期的cccl模型下的Configmap资源来进行业务发布，但同时又希望对AS3 Configmap发布方式具有更高发布性能。可使用CIS继续监听Ingress、CRD等资源，对于使用AS3语法的Configmap资源则采用CIS-C来发布
+* 在架构设计上，需要同时支持Ingress，CRD，AS3 Configmap这三种资源模式的
 
 
 
