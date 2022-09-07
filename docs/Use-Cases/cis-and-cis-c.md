@@ -86,7 +86,7 @@ data:
 
 
 
-#### cis-c-hub-as3  Yaml:
+#### cis-c-hub-as3  Yaml
 
 ```yaml
 kind: ConfigMap
@@ -142,7 +142,7 @@ data:
 
 
 
-#### F5 BIGIP-IP配置效果:
+#### F5 BIGIP-IP配置效果
 
 ![image-20220907083312314](img/image-20220907083312314.png)
 
@@ -314,6 +314,12 @@ data:
         }
     }
 ```
+
+
+
+#### F5 BIGIP-IP配置效果:
+
+相对于以上Hub模式下的配置，Configmap里对应的F5 partiton（tenant）并未发生变化，对象命名也均未发生变化，因此在BIG-IP的最终效果与上图一致。
 
 
 
