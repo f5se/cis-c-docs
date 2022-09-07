@@ -2,13 +2,13 @@
 
 ### 什么是 hub 模式
 
-hub 模式既控制平面集中式管理，hub 模式是一种很常见的应用场景，这种模式下，配置管理与服务管理可以相互独立，由不同运维人员在不同的namespace中处理。
+hub 模式即控制平面集中式管理，hub 模式是一种很常见的应用场景，这种模式下，配置管理与服务管理可以相互独立，由不同运维人员在不同的namespace中处理。
 
 ![image](cis-c-hub.png)
 
-如上图所示，DevOps 负责在绿色背景的 Namspace 中开发部署应用，NetOps 负责在红色背景的 Namspace 中将 DevOps 开发的应用发布出去。
+如上图所示，DevOps 团队负责在绿色背景的 Namspace 中开发部署应用，NetOps 团队负责在红色背景的 Namspace 中将 DevOps 开发的应用发布出去。
 
-hub 模式适用于对容器应用发布有几种管控诉求的场景，集合 Kubernetes 的 RBAC 等功能可以指定清晰的安全边界，使得容器应用开发者和容器应用的发布者各司其职。hub 模式适合大中型企业或组织，多部门参与的容器业务建设，在这种场景下 hub 模式可带来优化不同组织部门，现代化已有流程和规范的好的。
+hub 模式适用于对容器应用发布有集中管控诉求的场景，集合 Kubernetes 的 RBAC 等功能可以指定清晰的安全边界，使得容器应用开发者和容器应用的发布者各司其职。hub 模式适合大中型企业或组织，多部门参与的容器业务建设，在这种场景下 hub 模式可优化不同组织部门协作，带来现代化流程和规范的好处。
 
 ### CIS-C 部署中启用 hub 模式
 
@@ -27,9 +27,9 @@ hub 模式在 CIS-C 的部署中通过 `--hub-mode` 参数启动，hub 模式需
 ~~~
 
 * `--hub-mode` - 指定是否开启 hub 模式，参数值为 `true` 表示开启 hub 模式
-* `--namespace` - hub 模式下 `--namespace` 定义了控制平面集中式管理的 Namspace 的名称，资源跨ns可关联 
+* `--namespace` - hub 模式下 `--namespace` 定义了控制平面集中式管理的 Namspace 的名称。集中管理namespace里部署configmap，该configmap内可以引用业务ns里的资源
 
-NOTE: hub-mode 用于指定是否可以跨ns做cm与svc的关联，namespace namespace-label 用于圈定控制器监听资源范围，准确说是 hub-mode为true时表示namespace namespace-label指定的ns， configmap资源被监控，其他ns， svc ep被监控，hub-mode 为false时表示所有资源的范围。如果namespace namespace-label参数未指定，则hub-mode 为true时 所有资源都被监控，资源跨ns可关联。hub-mode为false时，所有资源都被监控，资源跨ns不可关联。
+NOTE: `hub-mode` 启用后，表示可以跨ns做cm与svc的关联。`namespace` `namespace-label` 用于指定控制器监听的集中式管理namespace，也就是说 hub-mode为true时表示`namespace` `namespace-label`指定的ns内的 configmap资源可被监控，而任何其他ns里的 svc ep资源被监控。如果namespace namespace-label参数未指定，则hub-mode 为true时所有资源都被监控，资源跨ns可关联。如果namespace namespace-label参数未指定，且hub-mode为false时，所有资源都被监控，但资源跨ns不可关联。
 
 ### Hub 模式部署示例
 
