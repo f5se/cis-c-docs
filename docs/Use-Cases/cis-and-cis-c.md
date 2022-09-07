@@ -9,8 +9,13 @@
 ## 混合部署需要考虑的问题
 
 * 不同的控制器不应同时监控相同的k8s资源，应采用`--namespace`、`--namespace-label`[启动参数](/Architecture/parameters)对监控的资源进行隔离
+
 * 不同的控制器下发的配置对象应分别对应在F5 BIG-IP的不同partition分区内，或对应到不同的F5 BIG-IP上
-* 在Overlay CNI环境下，需要考虑不同控制写入的静态ARP，FDB条目是否存在冲突。CIS-C会检测F5上的关于node FDB条目是否存在，因此不会发生问题。而对于pod相关的静态ARP，CIS-C写入的是F5的`/Common`partition，因此CIS需要注意启动参数中关于tunnel的参数应做相应修改，不应继续使用类似`--flannel-name=/Common/flannel_vxlan`配置方法，而应修改为`--flannel-name=/k8s/flannel_vxlan` 注意：k8s是F5上一个已经存在的分区。 为了优化用户体验，避免用户修改已经在运行的CIS参数，后续CIS-C将考虑增强容许客户自定义静态ARP写入的F5 partition
+
+* 在Overlay CNI环境下，需要考虑不同控制写入的静态ARP，FDB条目是否存在冲突。CIS-C会检测F5上的关于node FDB条目是否存在，因此不会发生问题。对于pod相关的静态ARP，CIS-C写入的是F5的`/Common`partition，而CIS采用覆盖性写入的方式，因此CIS写入的partition分区不能与CIS-C相同。CIS启动参数中关于tunnel的参数值应做相应修改，不应继续使用类似`--flannel-name=/Common/flannel_vxlan`配置方法，而应修改为`--flannel-name=/k8s/flannel_vxlan` 
+
+  > 注意：k8s是F5上一个已经存在的分区。 为了优化用户体验，避免用户修改已经在运行的CIS参数，后续CIS-C将考虑增强容许客户自定义静态ARP写入的F5 partition
+
 * 非Overlay CNI环境无考虑上述静态ARP问题
 
 
