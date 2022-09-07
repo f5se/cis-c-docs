@@ -139,6 +139,53 @@ data:
 
 
 
+### 控制器启动参数示例
+
+#### CIS控制器启动参数
+
+```shell
+      containers:
+      - args:
+        - --bigip-username=$(BIGIP_USERNAME)
+        - --bigip-password=$(BIGIP_PASSWORD)
+        - --bigip-url=172.16.20.205
+        - --bigip-partition=k8s
+        - --verify-interval=5
+        - --node-poll-interval=5
+        - --pool-member-type=cluster
+        - --default-ingress-ip=172.16.100.196
+        - --namespace=f5cis
+        - --log-as3-response
+        - --ingress-class=f5
+        - --hubmode=true
+        - --disable-teems=true
+        - --insecure=true
+        - --log-level=INFO
+        - --http-listen-address=0.0.0.0:9113
+        - --flannel-name=/k8s/flannel_vxlan
+```
+
+
+
+#### CIS-C控制器启动参数
+
+````shell
+      containers:
+      - args:
+        - --bigip-username=$(BIGIP_USERNAME)
+        - --bigip-password=$(BIGIP_PASSWORD)
+        - --bigip-url=https://172.16.20.205
+        - --log-level=debug
+        - --flannel-name=flannel_vxlan
+        - --namespace=cis-c-hub
+        - --hub-mode=true
+        - --ignore-service-port
+````
+
+
+
+
+
 ## 非Hub模式混合部署
 
 TODO
