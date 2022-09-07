@@ -35,7 +35,7 @@
   ```
   -1-> PATCH xxxx/mgmt/tm/ltm/virtual/myvirtual
   {... "sourceAddressTranslation":{"type":"automap"} ...}
-
+  
   -2-> DELETE xxxx/mgmt/tm/ltm/snatpool/mysnatpool
   {"code":400,"message":"transaction failed:01070320:3: Snatpool mysnatpool is still referenced by a virtual server.","errorStack":[],"apiError":2}
   ```
@@ -47,6 +47,8 @@
   * 方案二：使用删除+创建的方式代替修改，即先执行kubectl delete -f 然后执行 kubectl create -f, 而不是直接kubectl apply -f做更新操作。
   
     关于业务连续性的考虑：因为从snat变为automap操作本身会造成业务断联，所以 delete->create 方式尚可接受（是否真的可接受，待评估）。
+    
+
 
 *  `问题5：CIS-C不能感知其退出状态下的删除事件，即CIS-C启动之前的删除事件不会被监控`
 
