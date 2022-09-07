@@ -12,13 +12,17 @@
 
 * 不同的控制器下发的配置对象应分别对应在F5 BIG-IP的不同partition分区内，或对应到不同的F5 BIG-IP上
 
-* 在Overlay CNI环境下，需要考虑不同控制写入的静态ARP，FDB条目是否存在冲突。CIS-C会检测F5上的关于node FDB条目是否存在，因此不会发生问题。对于pod相关的静态ARP，CIS-C写入的是F5的`/Common`partition，而CIS采用覆盖性写入的方式，因此CIS写入的partition分区不能与CIS-C相同。CIS启动参数中关于tunnel的参数值应做相应修改，不应继续使用类似`--flannel-name=/Common/flannel_vxlan`配置方法，而应修改为`--flannel-name=/k8s/flannel_vxlan` 
+* 在Overlay CNI环境下，需要考虑不同控制器写入的静态ARP、FDB条目是否存在冲突：
 
-  > 注意：k8s是F5上一个已经存在的分区。 为了优化用户体验，避免用户修改已经在运行的CIS参数，后续CIS-C将考虑增强容许客户自定义静态ARP写入的F5 partition
+  * FDB: CIS-C会检测F5上的关于node FDB条目是否存在，因此不会发生问题。
+  * ARP: 对于pod相关的静态ARP，CIS采用覆盖性写入的方式，即CIS周期性刷新所有ARP条目，因此CIS写入的partition分区不能与CIS-C相同。
+  
+    目前，CIS-C写入的是F5 BIG-IP的`/cis-c-tenant`partition(> 2.9.1-20220831)，而CIS默认写入`/Common` partition下。新版本CIS-C会兼容并处理老版本（CIS-C <= 2.9.1-20220831）已经下发到Common下的ARPs条目。
+    
+  > 注意：可以通过以下方法修改CIS ARP写入partition，默认情况下并不需要：
+  CIS 启动时，可以通过`--flannel-name`设置tunnel。通过修改此参数值，修改默认partition，例如将`--flannel-name=/Common/flannel_vxlan`修改为`--flannel-name=/k8s/flannel_vxlan`，则相应ARP条目会写入k8s partition下。这里的k8s是F5上一个已经存在的分区。但此操作需要考虑已下发的ARP条目该如何处理。
 
 * 非Overlay CNI环境无考虑上述静态ARP问题
-
-
 
 ## 案例1：Hub模式下混合部署
 
