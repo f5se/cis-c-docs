@@ -30,7 +30,7 @@
 
 ### Configmap Yaml示例
 
-#### f5cis-hub-as3-cm yaml:
+#### f5cis-hub-as3-cm yaml
 
 ```yaml
 kind: ConfigMap
@@ -83,6 +83,8 @@ data:
         }
     }
 ```
+
+
 
 #### cis-c-hub-as3  Yaml:
 
@@ -138,7 +140,9 @@ data:
     }
 ```
 
-#### F5 BIGIP-IP配置效果
+
+
+#### F5 BIGIP-IP配置效果:
 
 ![image-20220907083312314](img/image-20220907083312314.png)
 
@@ -193,4 +197,166 @@ data:
 
 ## 非Hub模式混合部署
 
-TODO
+### 结构透视图
+
+在本示例中，CIS控制器监控`as3-2` namespace内的AS3发布资源，让CIS-C监控`as3-1`下的AS3发布资源。结构图如下：
+
+![image-20220907092405329](img/image-20220907092405329.png)
+
+### Confgimap Yaml示例
+
+#### cis-as3-2-as3-cm 示例
+
+```yaml
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: cis-as3-2-as3-cm
+  namespace: as3-2
+  labels:
+    f5type: virtual-server
+    as3: "true"
+data:
+  template: |
+    {
+        "class": "AS3",
+        "declaration": {
+            "class": "ADC",
+            "schemaVersion": "3.18.0",
+            "id": "f5cis-as3-nginxdemo-dfdsf",
+            "label": "Sample 1",
+            "updateMode": "selective",
+            "remark": "Simple HTTP application with RR pool",
+            "f5cis_as3_2": {
+                "class": "Tenant",
+                    "nginxdemo_as3_2": {
+                    "class": "Application",
+                    "template": "generic",
+                    "ingress_nginxdemo1": {
+                        "class": "Service_HTTP",
+                        "virtualAddresses": [
+                            "172.16.100.145"
+                        ],
+                        "remark":"ingress: nginxdemo1",
+                        "virtualPort": 80,
+                        "pool": "nginxdemo_pool_as3_2"
+                    },
+                    "nginxdemo_pool_as3_2": {
+                        "class": "Pool",
+                        "monitors": [
+                            "http"
+                        ],
+                        "members": [
+                            {
+                                "servicePort": 80,
+                                "serverAddresses": [ ]
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    }
+```
+
+
+
+#### cis-c-as3-1-as3-cm示例
+
+```yaml
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: cis-c-as3-1-as3-cm
+  namespace: as3-1
+  labels:
+    f5type: virtual-server
+    as3: "true"
+data:
+  template: |
+    {
+        "class": "AS3",
+        "declaration": {
+            "class": "ADC",
+            "schemaVersion": "3.18.0",
+            "id": "f5cis-as3-nginxdemo-as3-1",
+            "label": "Sample 1",
+            "updateMode": "selective",
+            "remark": "Simple HTTP application with RR pool",
+            "f5cis_c_as3_1": {
+                "class": "Tenant",
+                    "nginxdemo_as3_1": {
+                    "class": "Application",
+                    "template": "generic",
+                    "ingress_nginxdemo1": {
+                        "class": "Service_HTTP",
+                        "virtualAddresses": [
+                            "172.16.100.149"
+                        ],
+                        "remark":"ingress: nginxdemo1",
+                        "virtualPort": 80,
+                        "pool": "nginxdemo_pool_as3_1"
+                    },
+                    "nginxdemo_pool_as3_1": {
+                        "class": "Pool",
+                        "monitors": [
+                            "http"
+                        ],
+                        "members": [
+                            {
+                                "servicePort": 80,
+                                "serverAddresses": [ ]
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    }
+```
+
+
+
+### 控制器启动参数示例
+
+#### CIS控制器启动参数
+
+```shell
+      containers:
+      - args:
+        - --bigip-username=$(BIGIP_USERNAME)
+        - --bigip-password=$(BIGIP_PASSWORD)
+        - --bigip-url=172.16.20.205
+        - --bigip-partition=k8s
+        - --verify-interval=5
+        - --node-poll-interval=5
+        - --pool-member-type=cluster
+        - --default-ingress-ip=172.16.100.196
+        - --namespace=as3-2 <<<<< as3-2 namespace
+        - --hubmode=false <<<<<<非hub模式
+        - --log-as3-response
+        - --ingress-class=f5
+        - --disable-teems=true
+        - --insecure=true
+        - --log-level=INFO
+        - --http-listen-address=0.0.0.0:9113
+        - --flannel-name=/k8s/flannel_vxlan
+```
+
+
+
+#### CIS-C控制器启动参数
+
+```shell
+      containers:
+      - args:
+        - --bigip-username=$(BIGIP_USERNAME)
+        - --bigip-password=$(BIGIP_PASSWORD)
+        - --bigip-url=https://172.16.20.205
+        - --log-level=debug
+        - --flannel-name=flannel_vxlan
+        - --namespace=as3-1 <<<<< as3-1 namespace
+        - --hub-mode=false  <<<<< 非hub模式
+        - --ignore-service-port
+```
+
