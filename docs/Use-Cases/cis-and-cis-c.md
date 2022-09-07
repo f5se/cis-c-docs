@@ -10,19 +10,19 @@
 
 * 不同的控制器不应同时监控相同的k8s资源，应采用`--namespace`、`--namespace-label`[启动参数](/Architecture/parameters)对监控的资源进行隔离
 
-* 不同的控制器下发的配置对象应分别对应在F5 BIG-IP的不同partition分区内，或对应到不同的F5 BIG-IP上
+* 不同的控制器下发的配置对象应分别对应在F5 BIG-IP的不同partition分区内
 
 * 在Overlay CNI环境下，需要考虑不同控制器写入的静态ARP、FDB条目是否存在冲突：
 
-  * FDB: CIS-C会检测F5上的关于node FDB条目是否存在，因此不会发生问题。
-  * ARP: 对于pod相关的静态ARP，CIS采用覆盖性写入的方式，即CIS周期性刷新所有ARP条目，因此CIS写入的partition分区不能与CIS-C相同。
-  
-    目前，CIS-C写入的是F5 BIG-IP的`/cis-c-tenant`partition(> 2.9.1-20220831)，而CIS默认写入`/Common` partition下。新版本CIS-C会兼容并处理老版本（CIS-C <= 2.9.1-20220831）已经下发到Common下的ARPs条目。
-    
-  > 注意：可以通过以下方法修改CIS ARP写入partition，默认情况下并不需要：
-  CIS 启动时，可以通过`--flannel-name`设置tunnel。通过修改此参数值，修改默认partition，例如将`--flannel-name=/Common/flannel_vxlan`修改为`--flannel-name=/k8s/flannel_vxlan`，则相应ARP条目会写入k8s partition下。这里的k8s是F5上一个已经存在的分区。但此操作需要考虑已下发的ARP条目该如何处理。
+  * FDB: CIS-C会检测BIG-IP上的关于nodes FDB条目是否存在，因此不会发生问题
 
-* 非Overlay CNI环境无考虑上述静态ARP问题
+  * ARP: 对于pod相关的静态ARP，CIS采用覆盖性写入的方式，即CIS周期性刷新所有ARP条目，需要让CIS和CIS-C所写入的ARP条目位于不同的partition下。如果您使用的是高于`2.9.1-20220831`的版本CIS-C，则CIS-C会将ARP写入到`/cis-c-tenant`partition下，因此不会发生冲突
+    
+    > 提示1：如果您从低于`2.9.1-20220831`（含）升级到更新版本CIS-C，CIS-C会自动将已写入`/Common`partition下的ARP条目修改到`cis-c-tenant`下
+    
+    > 提示2：对于CIS-C低于或等于`2.9.1-20220831`的版本，您也可以选择修改CIS的默认ARP写入partition来避免冲突问题，例如，将启动设置`--flannel-name=/Common/flannel_vxlan`修改为`--flannel-name=/k8s/flannel_vxlan`，则相应ARP条目会写入到k8s partition下（k8s是一个提前手工建立好的partition）。此操作在生产环境操作需谨慎。 在本文以下的案例中使用的是即是修改CIS的参数方式。
+
+* 非Overlay CNI环境或CIS与CIS-C对接不同BIG-IP场景时，无考虑上述静态ARP问题以及目标partition问题
 
 ## 案例1：Hub模式下混合部署
 
