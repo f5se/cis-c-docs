@@ -33,24 +33,25 @@
   问题原因：此问题源自BIG-IP iControlRest的bug，将对应virtual的属性`sourceAddressTranslation`更新为'automap'后，对原有snatpool的关联关系没有及时清除，导致后续对snatpool的清理失败，日志报错：
   
   ```
-  -1-> PATCH xxxx/mgmt/tm/ltm/virtual/myvirtual
-  {... "sourceAddressTranslation":{"type":"automap"} ...}
   
-  -2-> DELETE xxxx/mgmt/tm/ltm/snatpool/mysnatpool
-  {"code":400,"message":"transaction failed:01070320:3: Snatpool mysnatpool is still referenced by a virtual server.","errorStack":[],"apiError":2}
-  ```
-
-  解决方案：
-  
-  * 方案一：登陆BIG-IP，手动修改对应virtual的`sourceAddressTranslation`属性为automap，然后执行kubectl apply 操作，完成从“snat”或“self”到“auto”的切换。
-
-  * 方案二：使用删除+创建的方式代替修改，即先执行kubectl delete -f 然后执行 kubectl create -f, 而不是直接kubectl apply -f做更新操作。
-  
-    关于业务连续性的考虑：因为从snat变为automap操作本身会造成业务断联，所以 delete->create 方式尚可接受（是否真的可接受，待评估）。
+    -1-> PATCH xxxx/mgmt/tm/ltm/virtual/myvirtual
+    {... "sourceAddressTranslation":{"type":"automap"} ...}
     
+    -2-> DELETE xxxx/mgmt/tm/ltm/snatpool/mysnatpool
+    {"code":400,"message":"transaction failed:01070320:3: Snatpool mysnatpool is still referenced by a virtual server.","errorStack":[],"apiError":2}
+    
+  ```
+  
+   解决方案：
+
+  方案一：登陆BIG-IP，手动修改对应virtual的`sourceAddressTranslation`属性为automap，然后执行kubectl apply 操作，完成从“snat”或“self”到“auto”的切换。
+  	
+  方案二：使用删除+创建的方式代替修改，即先执行kubectl delete -f 然后执行 kubectl create -f, 而不是直接kubectl apply -f做更新操作。
+
+	>关于业务连续性的考虑：因为从snat变为automap操作本身会造成业务断联，所以 delete->create 方式尚可接受（是否真的可接受，待评估）。
 
 
-*  `问题5：CIS-C不能感知其退出状态下的删除事件，即CIS-C启动之前的删除事件不会被监控`
+* `问题5：CIS-C不能感知其退出状态下的删除事件，即CIS-C启动之前的删除事件不会被监控`
 
   影响范围：在CIS-C启动前做过的k8s资源删除动作不会触发启动后CIS-C的删除行为。
 
