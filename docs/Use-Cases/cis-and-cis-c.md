@@ -18,7 +18,7 @@
 
   * ARP: 对于pod相关的静态ARP，CIS采用覆盖性写入的方式，即CIS周期性刷新所有ARP条目，需要让CIS和CIS-C所写入的ARP条目位于不同的partition下。如果您使用的是高于`2.9.1-20220831`的版本CIS-C，则CIS-C会将ARP写入到`/cis-c-tenant`partition下，因此不会发生冲突
     
-    > 提示1：如果您从低于`2.9.1-20220831`（含）升级到更新版本CIS-C，CIS-C会自动将已写入`/Common`partition下的ARP条目修改到`cis-c-tenant`下
+    > 提示1：如果您从低于`2.9.1-20220831`（含）升级到更新版本CIS-C，CIS-C会自动将已写入`/Common`partition下的ARP条目修改到`cis-c-tenant`下，`cis-c-tenant`由CIS-C启动时自动创建(当发现其不存在时)。目前，该partition没有参数化；该partition依旧可用于下发用户配置，但不同于其他partition，在删除配置时，它不会被删除，请**尽量**避开此partition下发用户配置。
     
     > 提示2：对于CIS-C低于或等于`2.9.1-20220831`的版本，您也可以选择修改CIS的默认ARP写入partition来避免冲突问题，例如，将启动设置`--flannel-name=/Common/flannel_vxlan`修改为`--flannel-name=/k8s/flannel_vxlan`，则相应ARP条目会写入到k8s partition下（k8s是一个提前手工建立好的partition）。此操作在生产环境操作需谨慎。 在本文以下的案例中使用的是即是修改CIS的参数方式。
 
