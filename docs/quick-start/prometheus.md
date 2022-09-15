@@ -126,18 +126,10 @@ Prometheus 的搭建方式有很多种，本文档中展示的是以docker方式
 
   举例同上，单位为毫秒(ms)。
 
-* phase_informer_duration_total：CIS-C对接k8s侧程序逻辑部分的耗时总计。
+* phase_duration_timecost_total：CIS-C各个协程逻辑的耗时总计。
 
-* phase_packer_duration_total：CIS-C编译转换AS3逻辑部分的耗时总计。
-
-* phase_ltmworker_duration_total：CIS-C完成LTM资源下发逻辑部分的耗时总计。
-
-* phase_networker_duration_total：CIS-C完成网络部署逻辑部分的耗时总计。
-
-  计算下发总耗时可以使用以下promsql：`phase_informer_duration_total + phase_packer_duration_total + phase_ltmworker_duration_total`
+    label `phase` 表示协程名称，包括： `k8sinformer` `ltmworker` `networker` `respacker` `ressyncer` `evreporter`.
   
-  注意，ltmworker和networker 为并发协程，与ltmworker同时执行，计算总耗时时不予计算在内。
-
 * monitored_resource_timecost：CIS-C下发过程中各细粒度操作耗时。
 
   *此监控指标多用于研发过程中的性能调优。*
@@ -187,6 +179,13 @@ Prometheus 的搭建方式有很多种，本文档中展示的是以docker方式
     * “pack”：表示从队列中取出预处理的时间，与处理过程是将k8s中的资源转化为BIG-IP可识别的数据结构。
 
     * “deploy”：表示CIS-C操控BIG-IP实现下发所用的时间。
+
+
+* function_duration_timecost：函数级别耗时统计。
+
+  其中 label `name`为函数名称。
+
+  此metrics主要用作追踪性能测试过程中的函数时耗情况，让开发者尽早发现当资源数量增加时的性能瓶颈点。
 
 
 ## 性能测试数据及方法
@@ -405,11 +404,7 @@ done
   此聚合指令以`request_id`划分，将来自`10.xx.yy.zz:30080`的metrics数据加和（`sum`），计算  得到各个request的时间耗时情况，如下图所示。
 
 
-* phase_*_duration_total
-
-  ```
-  phase_informer_duration_total + phase_packer_duration_total + phase_ltmworker_duration_total
-  ```
+* phase_duration_timecost_total
 
   此聚合命令可以统计CIS-C累计工作时长。
 
