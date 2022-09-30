@@ -26,6 +26,18 @@
 
     注意：*使用BIG-IP实际traffic 接口IP替换 10.250.16.127*
 
+  - (可选) 创建VXLAN V6 Tunnel 及VTEP IP. 仅当使用 IPV6 tunnel 场景时才需要。
+
+    ```
+    create net tunnels tunnel /Common/fl-tunnel6 {
+        key 1
+        local-address 2021:15:0:0:0:0:0:125
+        profile /Common/fl-vxlan
+    }
+    ```
+
+    注意：*使用BIG-IP实际的IP替换 2021:15:0:0:0:0:0:125*
+
   - 创建VXLAN Tunnel SelfIP
 
     ```
@@ -39,7 +51,18 @@
 
     注意这里的10.42.20.1/16的前两位通过指令`kubectl get node -o yaml | grep podCIDR`获取，第3位任选数值不与已有node重复即可。
 
-  - 创建本地VLAN及SelfIP
+  - (可选) 创建VXLAN Tunnel IPV6 SelfIP . 仅当使用 IPV6 tunnel 场景时才需要。
+
+    ```
+    create net self /Common/fl-vxlan-selfip-6 {
+        address 2021:118:2:2::/60
+        allow-service all
+        traffic-group /Common/traffic-group-local-only
+        vlan /Common/fl-tunnel6
+    }
+    ```
+
+  - 创建本地VLAN及SelfIP. 其中 vlan-traffic-6 这个IPV6 地址可选，仅当使用 IPV6 tunnel 场景时才需要。
 
     ```
     create net vlan /Common/vlan-traffic {
@@ -62,7 +85,15 @@
     }
     ```
 
-    注意：*使用BIG-IP实际traffic 接口IP替换 10.250.16.127*
+    ```
+    create net self /Common/vlan-traffic-6 {
+        address 2021:15::125/32
+        traffic-group /Common/traffic-group-local-only
+        vlan /Common/vlan-traffic
+    }
+    ```
+
+    注意：*使用BIG-IP实际 traffic 接口IP分别替换 V4 和 V6 地址。*
 
 ### 2. Kubernetes
 
@@ -156,7 +187,7 @@
 
     创建bigip1 虚拟节点，打通BIG-IP节点到k8s的vxlan网络。
 
-    使用以下yaml配置文件bigip_node.yaml：
+    使用以下yaml配置文件bigip1.yaml：
 
     ```
     apiVersion: v1
@@ -164,20 +195,30 @@
     metadata:
       name: bigip1
       annotations:
-        #Replace IP with Self-IP for your deployment
+        # Replace IP with Self-IP for your deployment
         flannel.alpha.coreos.com/public-ip: "10.250.18.105"
-        #Replace MAC with your BIGIP Flannel VXLAN Tunnel MAC
+        # uncomment the following line if using v6 tunnel and modify bigip v6 address
+        # flannel.alpha.coreos.com/public-ipv6: "2021:15::125"
+        # Replace MAC with your BIGIP Flannel VXLAN Tunnel MAC
         flannel.alpha.coreos.com/backend-data: '{"VtepMAC":"fa:16:3e:d5:28:07"}'
+        # uncomment the following line if using v6 tunnel and modify mac accordingly
+        # flannel.alpha.coreos.com/backend-v6-data: '{"VtepMAC":"fa:16:3e:d5:28:07"}'
         flannel.alpha.coreos.com/backend-type: "vxlan"
         flannel.alpha.coreos.com/kube-subnet-manager: "true"
     spec:
-      #Replace Subnet with your BIGIP Flannel Subnet
+      # Replace Subnet with your BIGIP Flannel Subnet
       podCIDR: "10.42.20.0/24"
+      # uncomment the following 3 lines if using v6 tunnel and modify CIDRs using real data
+      #podCIDRs:
+      #- "10.42.20.0/24"
+      #- "2021:118:2:2::/64"
     ```
 
-    其中 fa:16:3e:d5:28:07 可以在BIG-IP上使用此命令获取：
+    其中 mac 地址可以在BIG-IP上使用tmsh命令获取：
 
     `show net tunnels tunnel fl-tunnel all-properties`
+
+    `show net tunnels tunnel fl-tunnel6 all-properties`
 
     将以上内容放入bigip1.yaml文件中, 使用 `kubectl apply -f bigip1.yaml`命令执行文件内容。
 

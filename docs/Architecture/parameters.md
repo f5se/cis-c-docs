@@ -40,10 +40,20 @@ CIS-C安装部署方式，可参见“[下载与安装](../quick-start/installat
 * `--flannel-name string`
 
   可选。默认值为`""`(空字符串)。
+
+  若flannel-name不为空字符串，则表示该k8s网络环境使用ipv4 flannel 场景.
+
+  不同网络环境的BIG-IP配置参见“[准备工作](../quick-start/index.md)”部分描述。
+
+* `--flannel-name-v6 string`
+
+  可选。默认值为`""`(空字符串)。
+
+  若flannel-name-v6不为空字符串，则表示该k8s网络环境使用ipv6 flannel 场景.
   
-  若flannel-name值为空字符串，则标识该k8s网络环境使用calico；
+  若flannel-name 与 flannel-name-v6 同时设置，则意味着环境为 v4 与 v6 共存环境。
   
-  若flannel-name不为空字符串，则表示该k8s网络环境为flannel类型。
+  若flannel-name 与 flannel-name-v6 同时为空，则标识该环境使用calico。
   
   不同网络环境的BIG-IP配置参见“[准备工作](../quick-start/index.md)”部分描述。
 
