@@ -17,7 +17,6 @@
 * 增强AS3数据校验能力（针对AS3报文>100kB的场景）
 * 修复完善Prometheus监控[metrics](../quick-start/prometheus.md)，增加函数级性能监控
 * 其他功能修复和性能检测调优
-* 其他版本及质量监管能力增强
 
 ## Release: **2.9.1-20220831**
 
