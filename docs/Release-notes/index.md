@@ -1,5 +1,24 @@
 # 版本发布
 
+## Release: **2.9.1-20220930**
+
+### Docker Image
+
+[f5devcentral/k8s-bigip-ctlr-c:2.9.1-20220930](https://hub.docker.com/r/f5devcentral/k8s-bigip-ctlr-c)
+
+[f5devcentral/cis-c-as3-parser:latest](https://hub.docker.com/r/f5devcentral/cis-c-as3-parser)
+
+### Release Notes
+
+* 增加对k8s [IPv6环境及v4-v6混合部署环境](../Use-Cases/ipv6.md)支持
+* 增加[与CIS共存](../Use-Cases/cis-and-cis-c.md)能力支持，归置arp于独立partition
+* 增加针对BIGIP连接异常如40x 50x，conn-refused等的容错能力
+* 增加用户配置持久化支持
+* 增强AS3数据校验能力（针对AS3报文>100kB的场景）
+* 修复完善Prometheus监控[metrics](../quick-start/prometheus.md)，增加函数级性能监控
+* 其他功能修复和性能检测调优
+* 其他版本及质量监管能力增强
+
 ## Release: **2.9.1-20220831**
 
 ### Docker Image
