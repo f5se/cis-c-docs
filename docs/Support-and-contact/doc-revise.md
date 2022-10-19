@@ -10,4 +10,4 @@
 - [**jinjia812**](https://github.com/jinjia812)
 - [**f5-will**](https://github.com/f5-will)
 - [**kylinsoong**](https://github.com/kylinsoong)
-- [**xingjia2022**北银 ](https://github.com/xingjia2022)
+- [**xingjia2022** 北银](https://github.com/xingjia2022)
