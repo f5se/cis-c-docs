@@ -78,7 +78,7 @@
 * 支持IPv64转换,即对外发布IPv6访问IP，集群内使用IPv4。亦支持集群内IPv6
 
 #### 运维与升级支持
-* 兼容用户当前在CIS中已经发布的configmap yaml格式，用户在CIS-C中无法修改应用发布yaml
+* 兼容用户当前在CIS中已经发布的configmap yaml格式，用户在CIS-C中无需修改应用发布yaml
 * 支持从CIS升级到CIS-C，需要借助kic-tool工具完成升级迁移
 * 支持日志级别输出、和任务跟踪（request_id）
 * 支持与Prometheus集成，采集控制器性能数据
