@@ -252,3 +252,70 @@
         - targets: ["10.250.18.102:30080"]
   ```
   其中 10.250.18.102 为F5 CIS-C程序所在Node的IP。
+
+### 4. calico 配置参考（可选）仅当calico模式时需要。
+
+  注意： 检查相应的self IP 地址中，Port Lockdown 设置为 “Allow All” 或者添加上TCP custom port 端口179。
+
+  - BIGIP上操作：进入Network -> Route domain. 进入 Route Domain 0配置页面中，选中BGP将其移入到enabled列表中。 然后ssh 登录到BIGIP上，执行：
+
+    ```
+    imish
+    enable
+    config terminal
+    router bgp 64512
+    neighbor calico-k8s peer-group
+    neighbor calico-k8s remote-as 64512
+    neighbor <BIG-IP IP ADDRESS> peer-group calico-k8s
+    neighbor <each k8s NODE IP ADDRESS> peer-group calico-k8s
+    write
+    end
+    ```
+
+  - K8S master节点上操作：
+    ```
+    curl -O -L https://github.com/projectcalico/calicoctl/releases/download/v3.10.0/calicoctl
+    chmod +x calicoctl
+    sudo mv calicoctl /usr/local/bin
+    sudo mkdir /etc/calico
+    vim /etc/calico/calicoctl.cfg
+    ```
+
+    calicoctl.cfg 文件内容参考如下。修改成环境里正确的kubeconfig 的路径。
+    ```
+    apiVersion: projectcalico.org/v3
+    kind: CalicoAPIConfig
+    metadata:
+    spec:
+    datastoreType: "kubernetes"
+    kubeconfig: "~/.kube/config"
+    ```
+
+    运行 calicoctl get nodes 以检查 calicoctl 安装完成。
+
+    执行以下命令：
+    ```
+    cat << EOF | calicoctl create -f -
+    apiVersion: projectcalico.org/v3
+    kind: BGPConfiguration
+    metadata:
+      name: default
+    spec:
+      logSeverityScreen: Info
+      nodeToNodeMeshEnabled: true
+      asNumber: 64512
+    EOF
+    ```
+
+    执行以下命令. 注意修改成真实的BIGIP地址。
+    ```
+    cat << EOF | calicoctl create -f -
+    apiVersion: projectcalico.org/v3
+    kind: BGPPeer
+    metadata:
+        name: bgppeer-bigip1
+    spec:
+      peerIP: 192.2.3.4
+      asNumber: 64512
+    EOF
+    ```
