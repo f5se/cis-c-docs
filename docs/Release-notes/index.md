@@ -1,5 +1,19 @@
 # 版本发布
 
+## Release: **2.10.1-20221031**
+
+### Docker Image
+
+[f5devcentral/k8s-bigip-ctlr-c:2.10.1-20221031](https://hub.docker.com/r/f5devcentral/k8s-bigip-ctlr-c)
+
+[f5devcentral/cis-c-as3-parser:latest](https://hub.docker.com/r/f5devcentral/cis-c-as3-parser)
+
+### Release Notes
+
+* 增强资源下发的租户管理
+* 增强IPv6支持，并完善相关文档
+* 其他功能修复和性能检测调优
+
 ## Release: **2.9.1-20220930**
 
 ### Docker Image
