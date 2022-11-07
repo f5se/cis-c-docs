@@ -27,7 +27,7 @@ CIS-C安装部署方式，可参见“[下载与安装](../quick-start/installat
 
 * `--bigip-url string`
 
-  必填，Big-IP的web管理地址。 如: https://10.10.10.10:8443。
+  可选，Big-IP的web管理地址。 如: https://10.10.10.10:8443。
 
 * `--bigip-username string`
 
@@ -35,7 +35,13 @@ CIS-C安装部署方式，可参见“[下载与安装](../quick-start/installat
 
 * `--bigip-password string`
 
-  必填，Big-IP 相应账号的密码。
+  可选，Big-IP 相应账号的密码。
+
+* `--credentials-directory string`
+
+  可选。该目录里包含三个文件。文件名分别为 "username", "password" 和 "url"，分别对应 BIGIP 的用户名、密码和URL。
+  这些文件里的内容比传入的 --bigip-url,--bigip-username 或 --bigip-password 参数优先级更高.
+  使用方式参考 “[下载与安装](../quick-start/installation.md)” 中的方式2.
 
 * `--flannel-name string`
 
