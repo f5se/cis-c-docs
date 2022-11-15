@@ -266,7 +266,7 @@
     router bgp 64512
     neighbor calico-k8s peer-group
     neighbor calico-k8s remote-as 64512
-    neighbor <BIG-IP IP ADDRESS> peer-group calico-k8s
+    neighbor <OTHER BIG-IP IP ADDRESS> peer-group calico-k8s
     neighbor <each k8s NODE IP ADDRESS> peer-group calico-k8s
     write
     end
@@ -287,8 +287,8 @@
     kind: CalicoAPIConfig
     metadata:
     spec:
-    datastoreType: "kubernetes"
-    kubeconfig: "~/.kube/config"
+      datastoreType: "kubernetes"
+      kubeconfig: "/root/.kube/config"    ## 请修改为实际路径
     ```
 
     运行 calicoctl get nodes 以检查 calicoctl 安装完成。
@@ -319,3 +319,93 @@
       asNumber: 64512
     EOF
     ```
+
+  配置完成后，在 BIG-IP imish命令行中，通过`show bgp neighbors` 查看neighbor状态，确认neighbor状态为`BGP state = Established`
+
+    ```
+    #show bgp neighbors
+    BGP neighbor is 10.250.17.159, remote AS 64512, local AS 64512, internal link
+    Member of peer-group calico-k8s for session parameters
+      BGP version 4, remote router ID 10.250.17.159
+      BGP state = Established, up for 00:00:43
+      Last read 00:00:43, hold time is 90, keepalive interval is 30 seconds
+      Neighbor capabilities:
+        Route refresh: advertised and received (new)
+        Address family IPv4 Unicast: advertised and received
+      Received 5 messages, 0 notifications, 0 in queue
+      Sent 4 messages, 0 notifications, 0 in queue
+      Route refresh request: received 0, sent 0
+      Minimum time between advertisement runs is 5 seconds
+    For address family: IPv4 Unicast
+      BGP table version 3, neighbor version 3
+      Index 1, Offset 0, Mask 0x2
+      calico-k8s peer-group member
+      AF-dependant capabilities:
+        Graceful restart: advertised, received
+
+      Community attribute sent to this neighbor (both)
+      1 accepted prefixes
+      0 announced prefixes
+
+    Connections established 1; dropped 0
+    Graceful-restart Status:
+      Remote restart-time is 120 sec
+
+    Local host: 10.250.17.111, Local port: 55058
+    Foreign host: 10.250.17.159, Foreign port: 179
+    Nexthop: 10.250.17.111
+    Nexthop global: fe80::f816:3eff:feee:83d2
+    Nexthop local: ::
+    BGP connection: non shared network
+
+    BGP neighbor is 10.250.17.182, remote AS 64512, local AS 64512, internal link
+    Member of peer-group calico-k8s for session parameters
+      BGP version 4, remote router ID 10.250.17.182
+      BGP state = Established, up for 00:00:29
+      Last read 00:00:29, hold time is 90, keepalive interval is 30 seconds
+      Neighbor capabilities:
+        Route refresh: advertised and received (new)
+        Address family IPv4 Unicast: advertised and received
+      Received 5 messages, 0 notifications, 0 in queue
+      Sent 4 messages, 0 notifications, 0 in queue
+      Route refresh request: received 0, sent 0
+      Minimum time between advertisement runs is 5 seconds
+    For address family: IPv4 Unicast
+      BGP table version 3, neighbor version 3
+      Index 2, Offset 0, Mask 0x4
+      calico-k8s peer-group member
+      AF-dependant capabilities:
+        Graceful restart: advertised, received
+
+      Community attribute sent to this neighbor (both)
+      1 accepted prefixes
+      0 announced prefixes
+
+    Connections established 1; dropped 0
+    Graceful-restart Status:
+      Remote restart-time is 120 sec
+
+    Local host: 10.250.17.111, Local port: 42664
+    Foreign host: 10.250.17.182, Foreign port: 179
+    Nexthop: 10.250.17.111
+    Nexthop global: fe80::f816:3eff:feee:83d2
+    Nexthop local: ::
+    BGP connection: non shared network
+    ```
+
+  亦或通过calicoctl `calicoctl node status`命令查看:
+
+    ```
+    # calicoctl node status
+    Calico process is running.
+
+    IPv4 BGP status
+    +---------------+-------------------+-------+----------+-------------+
+    | PEER ADDRESS  |     PEER TYPE     | STATE |  SINCE   |    INFO     |
+    +---------------+-------------------+-------+----------+-------------+
+    | 10.250.17.182 | node-to-node mesh | up    | 03:07:33 | Established |
+    | 10.250.17.111 | global            | up    | 06:18:28 | Established |
+    +---------------+-------------------+-------+----------+-------------+
+    ```
+
+  更多配置请参考：https://f5-k8s-istio-lab.readthedocs.io/en/latest/BGP/introduction.html
