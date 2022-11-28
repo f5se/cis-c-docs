@@ -4,7 +4,7 @@
 
 > 以下vxlan相关步骤仅针对flannel模式。如果为calico等underlay模式，则不需要该步骤
 
-  - 创建VXLAN
+  - 创建VXLAN profile
 
     ```
     create net tunnels vxlan /Common/fl-vxlan {
