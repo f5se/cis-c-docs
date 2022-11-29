@@ -8,7 +8,7 @@
 
 1. 停止CIS程序，确保BIG-IP上现有业务不再有新的变更。
 2. 备份BIG-IP现有业务配置，实现方式可以通过ucs或者其他备份方式，以备切换失败时恢复。
-3. 运行cis-c-tool程序，具体使用方法参见[工具使用方法](https://gitee.com/zongzw/kic-tool#%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95)，特别注意的是需要添加参数`--output bigip`，必要时加参数`--overwrite`，详见“工具使用方法”。
+3. 运行cis-c-tool程序，具体使用方法参见[工具使用方法](https://gitee.com/zongzw/f5-tool-grep-resources){:target="_blank"}，特别注意的是需要添加参数`--output bigip`，必要时加参数`--overwrite`，详见“工具使用方法”。
 
    此步执行的作用是将BIG-IP上现有的已经下发的资源配置，收集起来，以特定格式（JSON）存入BIG-IP internal类型的Data Group中。
 
@@ -88,6 +88,6 @@
 
    CIS-C启动后会首先加载interval Data Group中以`f5-kic_`开头的数据，将其作为已下发资源状态。有了这份信息，CIS-C可以：
 
-   * 避免CIS-C重启后所有资源重新下发，这是因为interval Data Group信息可以作为上次下发的fingerprint，CIS-C每次下发前均会对比是否有变化。
+   * 避免CIS-C重启后所有资源重新下发，这是因为internal Data Group信息可以作为上次下发的fingerprint，CIS-C每次下发前均会对比是否有变化。
 
    * 在其他下发程序下发基础上继续增量更新。虽然CIS-C并不能知道之前下发程序（如CIS）是如何下发的，但通过cis-c-tool可以知道下发程序操作后BIG-IP上的资源状态。在此状态上，CIS-C便可以知道各种资源的关联关系（例如virtual-pool-member关联关系），就可以继续CRUD了。
