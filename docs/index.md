@@ -1,6 +1,6 @@
 # F5 CIS-C
 
-[![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/f5se/cis-c-docs) [![Docker pull](https://img.shields.io/docker/pulls/f5devcentral/k8s-bigip-ctlr-c?style=flat-square)](https://hub.docker.com/r/f5devcentral/k8s-bigip-ctlr-c) [![Issues](https://img.shields.io/github/issues/f5se/cis-c-docs?style=flat-square)](https://github.com/f5se/cis-c-docs/issues)![GitHub pull requests](https://img.shields.io/github/issues-pr/f5se/cis-c-docs?style=flat-square) [![Stars](https://img.shields.io/github/stars/f5se/cis-c-docs?style=flat-square)]() [![License](https://img.shields.io/github/license/f5se/cis-c-docs?style=flat-square)](./LICENSE)
+[![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/f5se/cis-c-docs) [![Docker pull](https://img.shields.io/docker/pulls/f5devcentral/k8s-bigip-ctlr-c?style=flat-square)](https://hub.docker.com/r/f5devcentral/k8s-bigip-ctlr-c) [![Issues](https://img.shields.io/github/issues/f5se/cis-c-docs?style=flat-square)](https://github.com/f5se/cis-c-docs/issues)![GitHub pull requests](https://img.shields.io/github/issues-pr/f5se/cis-c-docs?style=flat-square) [![Stars](https://img.shields.io/github/stars/f5se/cis-c-docs?style=flat-square)]() [![License](https://img.shields.io/github/license/f5se/cis-c-docs?style=flat-square)](https://github.com/f5se/cis-c-docs/blob/master/LICENSE)
 
 欢迎使用CIS-C。
 
