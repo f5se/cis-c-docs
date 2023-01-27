@@ -67,6 +67,7 @@
     ```
     create net vlan /Common/vlan-traffic {
         interfaces {
+        # interfaces add {  # 不同TMOS版本的命令参数稍有不同
             1.1 { }
         }
         sflow {
