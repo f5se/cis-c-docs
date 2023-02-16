@@ -1,5 +1,21 @@
 # 版本发布
 
+## Release: **2.11.1-20230216**
+
+### Docker Image
+
+[f5devcentral/k8s-bigip-ctlr-c:2.11.1-20230216](https://hub.docker.com/r/f5devcentral/k8s-bigip-ctlr-c)
+
+[f5devcentral/cis-c-as3-parser:latest](https://hub.docker.com/r/f5devcentral/cis-c-as3-parser)
+
+### Release Notes
+
+* 增强底层模块管理，业务下发和AS3解析逻辑独立为[f5-bigip-rest](https://gitee.com/zongzw/f5-bigip-rest)和[f5-as3-parsing](https://gitee.com/zongzw/f5-as3-parsing)
+* 增强安全交付能力，配置非root用户运行CIS-C
+* 优化iControlRest生成逻辑
+* 增强对函数耗时监控能力
+
+
 ## Release: **2.10.1-20221201**
 
 ### Docker Image
