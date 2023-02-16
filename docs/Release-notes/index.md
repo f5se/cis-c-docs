@@ -10,11 +10,8 @@
 
 ### Release Notes
 
-* 增强底层模块管理，业务下发和AS3解析逻辑独立为[f5-bigip-rest](https://gitee.com/zongzw/f5-bigip-rest)和[f5-as3-parsing](https://gitee.com/zongzw/f5-as3-parsing)
-* 增强安全交付能力，配置非root用户运行CIS-C
-* 优化iControlRest生成逻辑
-* 增强对函数耗时监控能力
-
+* 修复服务标签绑定异常([issue](https://github.com/f5se/cis-c-docs/issues/48) and [PR](https://gitee.com/zongzw/f5-kic/pulls/67))。
+* 完善具备request id的日志输出([PR](https://gitee.com/zongzw/f5-kic/pulls/66))。
 
 ## Release: **2.10.1-20221201**
 
