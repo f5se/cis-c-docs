@@ -1,5 +1,17 @@
 # 版本发布
 
+## Release: **2.12.1-20230608**
+
+### Docker Image
+
+[f5devcentral/k8s-bigip-ctlr-c:2.12.1-20230608](https://hub.docker.com/r/f5devcentral/k8s-bigip-ctlr-c)
+
+[f5devcentral/cis-c-as3-parser:latest](https://hub.docker.com/r/f5devcentral/cis-c-as3-parser)
+
+### Release Notes
+
+* 完善NodePort支持，ServiceType可以在NodePort和ClusterIP两种类型间自由切换部署。([issue](https://github.com/f5se/cis-c-docs/issues/52) and [PR](https://gitee.com/zongzw/f5-kic/pulls/69))。
+
 ## Release: **2.11.1-20230216**
 
 ### Docker Image
