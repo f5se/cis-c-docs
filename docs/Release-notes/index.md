@@ -25,7 +25,6 @@
 * 修复服务标签绑定异常([issue](https://github.com/f5se/cis-c-docs/issues/48) and [PR](https://gitee.com/zongzw/f5-kic/pulls/67))。
 * 完善具备request id的日志输出([PR](https://gitee.com/zongzw/f5-kic/pulls/66))。
 
-
 ## Release: **2.10.1-20221201**
 
 ### Docker Image
