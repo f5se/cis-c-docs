@@ -11,6 +11,8 @@
 ### Release Notes
 
 * 完善NodePort支持，ServiceType可以在NodePort和ClusterIP两种类型间自由切换部署。([issue](https://github.com/f5se/cis-c-docs/issues/52) and [PR](https://gitee.com/zongzw/f5-kic/pulls/69))。
+* 增加cis.f5.com/as3-tenant as3-app as3-pool 三个label的下发响应（被移除、新加时都会触发资源下发调整）([issue](https://github.com/f5se/cis-c-docs/issues/51))。
+* 优化以下资源的下发逻辑(rest请求+事务)：net/arp net/ndp ltm/node
 
 ## Release: **2.11.1-20230216**
 
