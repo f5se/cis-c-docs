@@ -1,5 +1,17 @@
 # 版本发布
 
+## Release: **2.12.2-20230621**
+
+### Docker Image
+
+[f5devcentral/k8s-bigip-ctlr-c:2.12.2-20230621](https://hub.docker.com/r/f5devcentral/k8s-bigip-ctlr-c)
+
+[f5devcentral/cis-c-as3-parser:latest](https://hub.docker.com/r/f5devcentral/cis-c-as3-parser)
+
+### Release Notes
+
+* 增加对flannel CNI中host-gw模式的支持 ([PR internal-only](https://gitee.com/zongzw/f5-kic/pulls/70)), ([issue](https://github.com/f5se/cis-c-docs/issues/53))。
+
 ## Release: **2.12.1-20230608**
 
 ### Docker Image
