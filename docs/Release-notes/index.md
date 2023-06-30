@@ -1,5 +1,19 @@
 # 版本发布
 
+## Release: **2.13.1-20230629**
+
+### Docker Image
+
+[f5devcentral/k8s-bigip-ctlr-c:2.13.1-20230629](https://hub.docker.com/r/f5devcentral/k8s-bigip-ctlr-c)
+
+[f5devcentral/cis-c-as3-parser:latest](https://hub.docker.com/r/f5devcentral/cis-c-as3-parser)
+
+### Release Notes
+
+* 增加/hook/prestop API支持业务的优雅退出以确保100%SLA ([issue](https://github.com/f5se/cis-c-docs/issues/57))。
+* 增加对Cilium CNI的支持 ([issue](https://github.com/f5se/cis-c-docs/issues/56))。
+
+
 ## Release: **2.12.2-20230621**
 
 ### Docker Image
