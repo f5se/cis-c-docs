@@ -48,7 +48,7 @@
 
 一般来说，在kubernetes中运行的应用需要考虑遵从云原生应用开发12要素中的一个建议，即服务应执行Graceful shutdown操作。如果收到SIGTERM就开始终止连接，在k8s这种频繁pod变化的环境下，这种中断体验带来的影响会被放大，从而降低服务SLA。对于外部LB控制器来说，如果不能及时反映相关变化，就会导致继续分发相关新连接，从而放大问题。
 
-因此需要尽量在kubelet发出SIGTERM信号之前就让该pod上的连接尽快处理完毕。因此就需要在SIGTERM信号发出之前前端的Ingress，外部LB提前停止分发新的连接**（例如CIS-C的高性能特性可以在BIG-IP上快速删除相关member，或在k8s API接口异常情况下能通过prestop hook发送信号提前disable/force offline相关member**）**。同时，在prestop hook阶段采用sleep方式等待一些时间也可以帮助减缓问题，利用这个sleep时间让应用将已有的连接处理完毕，以尽量达到在收到SIGTERM时候该pod已经没有连接了。
+因此需要尽量在kubelet发出SIGTERM信号之前就让该pod上的连接尽快处理完毕。因此就需要在SIGTERM信号发出之前前端的Ingress，外部LB提前停止分发新的连接，**例如CIS-C的高性能特性可以在BIG-IP上快速删除相关member，或在k8s API接口异常情况下能通过prestop hook发送信号提前disable/force offline相关member**。同时，在prestop hook阶段采用sleep方式等待一些时间也可以帮助减缓问题，利用这个sleep时间让应用将已有的连接处理完毕，以尽量达到在收到SIGTERM时候该pod已经没有连接了。
 
 ### 超长活动连接在`terminationGracePeriodSeconds`到期后依然未结束，被kubelet强行Kill。
 
