@@ -4,30 +4,41 @@
 
 ### Docker Image
 
-[f5devcentral/k8s-bigip-ctlr-c:2.13.1-20230629](https://hub.docker.com/r/f5devcentral/k8s-bigip-ctlr-c)
-
-[f5devcentral/cis-c-as3-parser:latest](https://hub.docker.com/r/f5devcentral/cis-c-as3-parser)
-
-
-## Release: **2.14.2-20230713**
-
-### Docker Image
-
-[f5devcentral/k8s-bigip-ctlr-c:2.13.1-20230629](https://hub.docker.com/r/f5devcentral/k8s-bigip-ctlr-c)
+[f5devcentral/k8s-bigip-ctlr-c:2.14.3-20230721](https://hub.docker.com/r/f5devcentral/k8s-bigip-ctlr-c)
 
 [f5devcentral/cis-c-as3-parser:latest](https://hub.docker.com/r/f5devcentral/cis-c-as3-parser)
 
 ### Release Notes
 
-* 增加/hook/prestop API支持业务的优雅退出以确保100%SLA ([issue](https://github.com/f5se/cis-c-docs/issues/57))。
-* 增加对Cilium CNI的支持 ([issue](https://github.com/f5se/cis-c-docs/issues/56))。
+* 性能优化。
+  * 优化当业务量巨大时持久化策略。 commits [1](https://gitee.com/zongzw/f5-kic/commit/1b58e6f133c9129c16e44fbe22ae510d2dce4abd), [2](https://gitee.com/zongzw/f5-kic/commit/a34fe0b48d09ff79b42007ccf7036c2348b16a2e)
+  * 修改启动时逐个加载data-group为一次性加载所有，提高启动速度。[commit](https://gitee.com/zongzw/f5-kic/commit/9006a557c68e568fb33541670c7e5ac22b515121)
+  * 修改业务和应用的串行化配置为周期性任务。[commit](https://gitee.com/zongzw/f5-kic/commit/8c8f86a12a67b3dc88478fc198a3f21802b5159c)
+* 修复多个service共享同一个deployment导致BIG-IP node共享时无法删除业务问题。[commit](https://gitee.com/zongzw/f5-kic/commit/fb03f8776edb7334ae1a18157ecd549c7f979815)
+* 修复统一资源并发操作（创建随即马上删除，CIS-C还未处理完成创建）时的清除失败问题。[commit](https://gitee.com/zongzw/f5-kic/commit/a34fe0b48d09ff79b42007ccf7036c2348b16a2e)
+* 修改prestop异步调用为同步阻塞调用，避免事件队列过长引起的member状态更新延后。[commit](https://gitee.com/zongzw/f5-kic/commit/064f79a10f1fcc7f9293bdcdf2ee47f8e36e7197)
+* 代码规范性调整。commits [1](https://gitee.com/zongzw/f5-kic/commit/88abc8d379a5fe8c11fc95a4726a3ac119557c79), [2](https://gitee.com/zongzw/f5-kic/commit/de16603d40c45ed8bdb8554e47a4e4a327159618)
+
+## Release: **2.14.2-20230713**
+
+### Docker Image
+
+[f5devcentral/k8s-bigip-ctlr-c:2.14.2-20230713](https://hub.docker.com/r/f5devcentral/k8s-bigip-ctlr-c)
+
+[f5devcentral/cis-c-as3-parser:latest](https://hub.docker.com/r/f5devcentral/cis-c-as3-parser)
+
+### Release Notes
+
+* 增加参数--pool-member-type参数用于控制NodePort类型的Service下发后的member类型。[commit](https://gitee.com/zongzw/f5-kic/commit/ed3fd3d88e8919b67a656d8d8ba6bc4e55cca67f)
+* 调整prometheus监控指标，追加事件处理耗时监控。[commit](https://gitee.com/zongzw/f5-kic/commit/bb4f08d38debcd9b266c55d5c62a059fdf360bb6)
+* 增加周期性任务机制用于处理BIG-IP配置保存。 [commit](https://gitee.com/zongzw/f5-kic/commit/9a6887e50e6f7cb7354af05454c3ebf4710323c9)
 
 
 ## Release: **2.14.1-20230712**
 
 ### Docker Image
 
-[f5devcentral/k8s-bigip-ctlr-c:2.13.1-20230629](https://hub.docker.com/r/f5devcentral/k8s-bigip-ctlr-c)
+[f5devcentral/k8s-bigip-ctlr-c:2.14.1-20230712](https://hub.docker.com/r/f5devcentral/k8s-bigip-ctlr-c)
 
 [f5devcentral/cis-c-as3-parser:latest](https://hub.docker.com/r/f5devcentral/cis-c-as3-parser)
 
