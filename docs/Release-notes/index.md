@@ -1,5 +1,59 @@
 # 版本发布
 
+## Release: **2.14.3-20230721**
+
+### Docker Image
+
+[f5devcentral/k8s-bigip-ctlr-c:2.14.3-20230721](https://hub.docker.com/r/f5devcentral/k8s-bigip-ctlr-c)
+
+[f5devcentral/cis-c-as3-parser:latest](https://hub.docker.com/r/f5devcentral/cis-c-as3-parser)
+
+### Release Notes
+
+* 性能优化。
+  * 优化当业务量巨大时持久化策略。 commits [1](https://gitee.com/zongzw/f5-kic/commit/1b58e6f133c9129c16e44fbe22ae510d2dce4abd), [2](https://gitee.com/zongzw/f5-kic/commit/a34fe0b48d09ff79b42007ccf7036c2348b16a2e)
+  * 修改启动时逐个加载data-group为一次性加载所有，提高启动速度。[commit](https://gitee.com/zongzw/f5-kic/commit/9006a557c68e568fb33541670c7e5ac22b515121)
+  * 修改业务和应用的串行化配置为周期性任务。[commit](https://gitee.com/zongzw/f5-kic/commit/8c8f86a12a67b3dc88478fc198a3f21802b5159c)
+* 修复多个service共享同一个deployment导致BIG-IP node共享时无法删除业务问题。[commit](https://gitee.com/zongzw/f5-kic/commit/fb03f8776edb7334ae1a18157ecd549c7f979815)
+* 修复统一资源并发操作（创建随即马上删除，CIS-C还未处理完成创建）时的清除失败问题。[commit](https://gitee.com/zongzw/f5-kic/commit/a34fe0b48d09ff79b42007ccf7036c2348b16a2e)
+* 修改prestop异步调用为同步阻塞调用，避免事件队列过长引起的member状态更新延后。[commit](https://gitee.com/zongzw/f5-kic/commit/064f79a10f1fcc7f9293bdcdf2ee47f8e36e7197)
+* 代码规范性调整。commits [1](https://gitee.com/zongzw/f5-kic/commit/88abc8d379a5fe8c11fc95a4726a3ac119557c79), [2](https://gitee.com/zongzw/f5-kic/commit/de16603d40c45ed8bdb8554e47a4e4a327159618)
+
+## Release: **2.14.2-20230713**
+
+### Docker Image
+
+[f5devcentral/k8s-bigip-ctlr-c:2.14.2-20230713](https://hub.docker.com/r/f5devcentral/k8s-bigip-ctlr-c)
+
+[f5devcentral/cis-c-as3-parser:latest](https://hub.docker.com/r/f5devcentral/cis-c-as3-parser)
+
+### Release Notes
+
+* 增加参数--pool-member-type参数用于控制NodePort类型的Service下发后的member类型。[commit](https://gitee.com/zongzw/f5-kic/commit/ed3fd3d88e8919b67a656d8d8ba6bc4e55cca67f)
+* 调整prometheus监控指标，追加事件处理耗时监控。[commit](https://gitee.com/zongzw/f5-kic/commit/bb4f08d38debcd9b266c55d5c62a059fdf360bb6)
+* 增加周期性任务机制用于处理BIG-IP配置保存。 [commit](https://gitee.com/zongzw/f5-kic/commit/9a6887e50e6f7cb7354af05454c3ebf4710323c9)
+
+
+## Release: **2.14.1-20230712**
+
+### Docker Image
+
+[f5devcentral/k8s-bigip-ctlr-c:2.14.1-20230712](https://hub.docker.com/r/f5devcentral/k8s-bigip-ctlr-c)
+
+[f5devcentral/cis-c-as3-parser:latest](https://hub.docker.com/r/f5devcentral/cis-c-as3-parser)
+
+### Release Notes
+
+* 延迟pod删除时的arp删除(针对flannel vxlan)，确保业务在pod删除前的联通性 [commit](https://gitee.com/zongzw/f5-kic/commit/1e1584c637ca8b69d0000bd3a67a90ed27d0f12d)
+* 实现架构调整:
+  * 使用controller-runtime取代informer实现对资源事件的监听。commits [1](https://gitee.com/zongzw/f5-kic/commit/ee4587dbd607fa0f67708e953a609c4bb15a1360), [2](https://gitee.com/zongzw/f5-kic/commit/f278ad84f87a8d5a95a1afaafaba59b8768a37d7)
+  * 串行化处理BIG-IP iControl Rest请求，保证BIG-IP下发一致性。 commits [1](https://gitee.com/zongzw/f5-kic/commit/ed9200014929a5c74df8dc65695f2d9569fde8fa), [2](https://gitee.com/zongzw/f5-kic/commit/193631d9d55e841b98ceb3a2716f98efc045b2c1), [3](https://gitee.com/zongzw/f5-kic/commit/eb3d06beb0733ba782cf84954e980f06fd54c202)
+* 修复当资源事件量大时的卡死问题，[commit](https://gitee.com/zongzw/f5-kic/commit/75689944661eb462bbd0d14c6cbc1e877eea663c)
+* 增加/hook/settings API实现部分配置项动态化：log-level sys-save-interval health-check-interval。commits [1](https://gitee.com/zongzw/f5-kic/commit/c6a8746806f1d3259c7e2cd618cba6c25ef5f1cf), [2](https://gitee.com/zongzw/f5-kic/commit/a5dbeed25093a89c7b176ec64b5bd220d5adf4fe)
+
+* 性能优化，减少不必要的资源触发事件。  [commit](https://gitee.com/zongzw/f5-kic/commit/7fab8d4ba648c704e42b201c55590114469665d8)
+
+
 ## Release: **2.13.1-20230629**
 
 ### Docker Image
