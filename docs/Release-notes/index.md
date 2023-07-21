@@ -1,5 +1,48 @@
 # 版本发布
 
+## Release: **2.14.3-20230721**
+
+### Docker Image
+
+[f5devcentral/k8s-bigip-ctlr-c:2.13.1-20230629](https://hub.docker.com/r/f5devcentral/k8s-bigip-ctlr-c)
+
+[f5devcentral/cis-c-as3-parser:latest](https://hub.docker.com/r/f5devcentral/cis-c-as3-parser)
+
+
+## Release: **2.14.2-20230713**
+
+### Docker Image
+
+[f5devcentral/k8s-bigip-ctlr-c:2.13.1-20230629](https://hub.docker.com/r/f5devcentral/k8s-bigip-ctlr-c)
+
+[f5devcentral/cis-c-as3-parser:latest](https://hub.docker.com/r/f5devcentral/cis-c-as3-parser)
+
+### Release Notes
+
+* 增加/hook/prestop API支持业务的优雅退出以确保100%SLA ([issue](https://github.com/f5se/cis-c-docs/issues/57))。
+* 增加对Cilium CNI的支持 ([issue](https://github.com/f5se/cis-c-docs/issues/56))。
+
+
+## Release: **2.14.1-20230712**
+
+### Docker Image
+
+[f5devcentral/k8s-bigip-ctlr-c:2.13.1-20230629](https://hub.docker.com/r/f5devcentral/k8s-bigip-ctlr-c)
+
+[f5devcentral/cis-c-as3-parser:latest](https://hub.docker.com/r/f5devcentral/cis-c-as3-parser)
+
+### Release Notes
+
+* 延迟pod删除时的arp删除(针对flannel vxlan)，确保业务在pod删除前的联通性 [commit](https://gitee.com/zongzw/f5-kic/commit/1e1584c637ca8b69d0000bd3a67a90ed27d0f12d)
+* 实现架构调整:
+  * 使用controller-runtime取代informer实现对资源事件的监听。commits [1](https://gitee.com/zongzw/f5-kic/commit/ee4587dbd607fa0f67708e953a609c4bb15a1360), [2](https://gitee.com/zongzw/f5-kic/commit/f278ad84f87a8d5a95a1afaafaba59b8768a37d7)
+  * 串行化处理BIG-IP iControl Rest请求，保证BIG-IP下发一致性。 commits [1](https://gitee.com/zongzw/f5-kic/commit/ed9200014929a5c74df8dc65695f2d9569fde8fa), [2](https://gitee.com/zongzw/f5-kic/commit/193631d9d55e841b98ceb3a2716f98efc045b2c1), [3](https://gitee.com/zongzw/f5-kic/commit/eb3d06beb0733ba782cf84954e980f06fd54c202)
+* 修复当资源事件量大时的卡死问题，[commit](https://gitee.com/zongzw/f5-kic/commit/75689944661eb462bbd0d14c6cbc1e877eea663c)
+* 增加/hook/settings API实现部分配置项动态化：log-level sys-save-interval health-check-interval。commits [1](https://gitee.com/zongzw/f5-kic/commit/c6a8746806f1d3259c7e2cd618cba6c25ef5f1cf), [2](https://gitee.com/zongzw/f5-kic/commit/a5dbeed25093a89c7b176ec64b5bd220d5adf4fe)
+
+* 性能优化，减少不必要的资源触发事件。  [commit](https://gitee.com/zongzw/f5-kic/commit/7fab8d4ba648c704e42b201c55590114469665d8)
+
+
 ## Release: **2.13.1-20230629**
 
 ### Docker Image
