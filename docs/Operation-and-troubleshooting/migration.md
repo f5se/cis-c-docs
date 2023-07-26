@@ -311,6 +311,30 @@ $ python update-virtual-address-name_refs.py existing-vs-va.json
 * 运行结束后生成 existing-vs-va.json-updated 文件。
 * 脚本支持IPv6类型的virtual-address.
 
+修改完成后，新生成的`existing-vs-va.json-updated`内容如下：
+
+```json
+{
+    "my_tenant": {
+        "": {
+            "ltm/virtual-address/10.51.19.60": {
+                "address": "10.51.19.60",
+                "name": "10.51.19.60",
+                ...
+            }
+        },
+        "my_app": {
+            "ltm/virtual/my_virtual": {
+                "destination": "/my_tenant/10.51.19.60:80",
+                "name": "my_virtual",
+                "partition": "my_tenant",
+                ...
+            }
+        }
+    }
+}
+```
+
 #### 5. 运行`f5-tool-deploy-rest`程序
 
 运行方式：
