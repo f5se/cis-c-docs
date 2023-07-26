@@ -1,8 +1,12 @@
 # 版本发布
 
 *Note:*
-*Release Node中的commit链接为内部gitlab链接，外部并不能直接访问。*
+
+*Release Note中的commit链接为内部gitlab链接，外部并不能直接访问。*
+
 *如有源码需求，可联系F5支持人员，获取源码zip文件。*
+
+##
 
 ## Release: **2.14.5-20230726**
 
