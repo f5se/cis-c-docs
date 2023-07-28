@@ -6,7 +6,20 @@
 
 *如有源码需求，可联系F5支持人员，获取源码zip文件。*
 
-##
+## Release: **2.14.6-20230728**
+
+### Docker Image
+
+[f5devcentral/k8s-bigip-ctlr-c:2.14.6-20230728](https://hub.docker.com/r/f5devcentral/k8s-bigip-ctlr-c)
+
+[f5devcentral/cis-c-as3-parser:latest](https://hub.docker.com/r/f5devcentral/cis-c-as3-parser)
+
+### Release Notes
+
+* 优化preStop调用过程，改从BIG-IP侧发现member为从k8s侧发现，以减少调用时间。[commit](https://gitlab.f5net.com/cis-c/f5-kic/-/commit/67a99a3f738d712df23b0991877de2b7da515a6e)
+* 优化请求处理队列，合并同类请求以减少重复BIG-IP调用次数。commits [1](https://gitlab.f5net.com/cis-c/f5-kic/-/commit/35a7d00b0ec4363c848177bb2a53f9ac0011d787), [2](https://gitlab.f5net.com/cis-c/f5-kic/-/commit/5c192eafbf1c16b8c35f48e6fe301b8a5594df76)
+* 优化请求处理队列中对node的处理，删除重复的请求事件。[commit](https://gitlab.f5net.com/cis-c/f5-kic/-/commit/f975718733416a63fc6198c13f128fdc6d23e9e8)
+
 
 ## Release: **2.14.5-20230726**
 
