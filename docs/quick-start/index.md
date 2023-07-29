@@ -446,7 +446,9 @@ Cilium 是一个用于透明保护部署在 Linux 容器管理平台（比如 Do
 
 它使用 eBPF 可以在 Linux 自身内部动态的插入一些控制逻辑，从而满足可观察性和安全性相关的需求。
 
-Cilium vxlan模式下，我们需要在BIG-IP侧创建相同的vxlan tunnel。 与Flannel vxlan稍有不同的是：
+#### BIG-IP侧配置cilium tunnel
+
+Cilium vxlan模式下，我们需要在BIG-IP侧创建相同的vxlan tunnel，但部分配置项与Flannel vxlan稍有不同。以下仅描述了与Flannel vxlan配置过程不同的部分，完整过程请参考[flannel vxlan配置部分](#flannel网络)。
 
 * tunnel profile 的 flooding type 要设置为 `multipoint`。
 
@@ -465,6 +467,7 @@ Cilium vxlan模式下，我们需要在BIG-IP侧创建相同的vxlan tunnel。 �
   ```
 
 * tunnel 静态FDB 信息为0a:0a:0x:0x:0x:0x的形式，其中0x:0x:0x:0x部分为K8S各node节点16进制的IP地址。
+
   此部分配置在CIS-C启动时由CIS-C自动配置完成。
 
 * 配置到pod CIDR的静态路由。
@@ -475,9 +478,50 @@ Cilium vxlan模式下，我们需要在BIG-IP侧创建相同的vxlan tunnel。 �
   network: 10.0.0.0/16    # pod CIDR 总网段
   tmInterface: fl-tunnel  # 所有到10.0.0.0/16的流量均从tunnel fl-tunnel进出
   ```
-  
+  操作命令为：
+
   ```shell
   $ tmsh create net route 10.0.0.0 network 10.0.0.0/16 interface fl-tunnel
   ```
+
+#### K8S侧配置cilium VTEP
+
+在K8S侧，我们需要配置cilium到BIG-IP的vtep信息：
+
+```shell
+$ helm upgrade cilium /root/cilium-1.12.10/install/kubernetes/cilium \
+              --namespace kube-system \
+              --set rollOutCiliumPods=true \
+              --set debug.enabled=true \
+              --set kubeProxyReplacement=strict \
+              --set ipam.mode="kubernetes" \
+              --set k8sServiceHost=10.250.16.103 \
+              --set k8sServicePort=6443 \
+              --set l7Proxy=false \
+              --set vtep.enabled="true" \
+              --set vtep.endpoint="10.250.16.105" \
+              --set vtep.cidr="10.0.20.1/24" \
+              --set vtep.mac="fa:16:3e:8f:47:51" \
+              --set vtep.mask="255.255.255.0"
+$ kubectl -n kube-system rollout restart ds/cilium
+```
+
+在以上命令中，我们下载cilium安装文件到本地，并helm更新cilium即启动参数，请根据实际情况，替换这里的1.12.10为实际环境中的cilium版本。
+
+`vtep.*`部分配置了BIG-IP VTEP信息。其中，
+
+* vtep.endpoint 为BIG-IP数据口的selfip。
+* vtep.cidr 为tunnel selfip网络，取值方式和flannel vxlan方式相同。
+* vtep.mac 为tunnel mac地址，取值方式与flannel vxlan中tunnel方式相同。
+
+运行以上命令完成部署后，登入某一个cilium pod中，我们可以查看vtep setup的状态结果：
+
+```shell
+$ kubectl -n kube-system exec -it cilium-txwjc -- cilium bpf vtep list
+
+Defaulted container "cilium-agent" out of: cilium-agent, config (init), mount-cgroup (init), apply-sysctl-overwrites (init), mount-bpf-fs (init), clean-cilium-state (init), install-cni-binaries (init)
+IP PREFIX/ADDRESS   VTEP
+10.0.20.0           vtepmac=FA:16:3E:8F:47:51 tunnelendpoint=10.250.16.105
+```
 
 *更多cilium的使用和安装可参考[cilium官网](https://docs.cilium.io/en/stable/gettingstarted/k8s-install-default/)或相关[博文](https://blog.csdn.net/zongzw/article/details/131244387).*
