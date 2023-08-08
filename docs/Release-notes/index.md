@@ -6,6 +6,19 @@
 
 *如有源码需求，可联系F5支持人员，获取源码zip文件。*
 
+## Release: **2.14.7-20230808**
+
+### Docker Image
+
+[f5devcentral/k8s-bigip-ctlr-c:2.14.7-20230808](https://hub.docker.com/r/f5devcentral/k8s-bigip-ctlr-c)
+
+[f5devcentral/cis-c-as3-parser:latest](https://hub.docker.com/r/f5devcentral/cis-c-as3-parser)
+
+### Release Notes
+
+* 增加prestop回调功能中双栈情况下的参数检查，[commit](https://gitlab.f5net.com/cis-c/f5-kic/-/commit/4a30f3d4154d72ca521e3af4d1ba1aba0bd51448)
+* 优化调整代码结构，[commit](https://gitlab.f5net.com/cis-c/f5-kic/-/commit/b2f91276c33eac1a6949286194abd4bf87fd0825)
+
 ## Release: **2.14.6-20230728**
 
 ### Docker Image
