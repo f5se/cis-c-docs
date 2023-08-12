@@ -6,6 +6,18 @@
 
 *如有源码需求，可联系F5支持人员，获取源码zip文件。*
 
+## Release: **2.14.8-20230811**
+
+### Docker Image
+
+[f5devcentral/k8s-bigip-ctlr-c:2.14.8-20230811](https://hub.docker.com/r/f5devcentral/k8s-bigip-ctlr-c)
+
+[f5devcentral/cis-c-as3-parser:latest](https://hub.docker.com/r/f5devcentral/cis-c-as3-parser)
+
+### Release Notes
+
+* 修复因为Service Label变化导致的pool member下发异常。[commit](https://gitlab.f5net.com/cis-c/f5-kic/-/commit/e533cf6e805d257598e8a23899fc143840341dfb)
+
 ## Release: **2.14.7-20230808**
 
 ### Docker Image
