@@ -129,36 +129,60 @@ CIS-C实现中对这两种输入采取统一的处理方式，即都用virtual-a
   import sys
   import os
   import re
-  
+
   data = ""
   if len(sys.argv) != 2:
-    print("should be given original json file greped by f5-tool-grep-resources tool")
-    sys.exit(1)
-
+      print("should be given cis.json greped by cis-c tool")
+      sys.exit(1)
   with open(sys.argv[1]) as fr:
-    data = fr.read()
-  
-  # replace virtual-address name of ipv6
-  matches = re.findall("\"ltm/virtual-address/((.*)_(([0-9a-f]{4}_){7}[0-9a-f]{4}))\"", data)
-  for m in matches:
-    print(m)
-    ipv6 = m[2].replace("_", ":")
-    data = data.replace(m[0], ipv6)
-  
-  # replace virtual destination ':' -> '.'
-  matches = re.findall("((([0-9a-f]{4}:){7}[0-9a-f]{4})(:))", data)
-  for m in matches:
-    print(m)
-    data = data.replace(m[0], m[1]+".")
-  
-  # replace virtual-address name of ipv4
-  matches = re.findall("\"ltm/virtual-address/((.*)_(([0-9]{1,3}\.){3}[0-9]{1,3}))\"", data)
-  for m in matches:
-    print(m)
-    data = data.replace(m[0], m[2])
-  
-  with open(sys.argv[1]+"-updated", "w") as fw:
-    fw.write(data)
+      data = fr.read()
+
+  jd = json.loads(data)
+  out = {}
+  for pn in jd:
+      if out.get(pn, None) == None: out[pn] = {}
+      for fn in jd[pn]:
+          if out[pn].get(fn, None) == None: out[pn][fn] = {}
+          for rn in jd[pn][fn]:
+              if rn.find('ltm/virtual/') == 0:
+                  v = jd[pn][fn][rn]
+                  destination = v['destination']
+                  matches = re.match("(/.*)(:|\.)(\d+)$", destination)
+                  if matches:
+                      pnarr = matches[1][1:].split('/')
+                      if len(pnarr) == 2:
+                          p, f, n = pnarr[0], '', pnarr[1]
+                          va = jd[p][f]['ltm/virtual-address/'+n]
+                          addr = va['address']
+                          destination = "/%s/%s" % (p, addr)
+                      else:
+                          p, f, n = pnarr[0], pnarr[1], pnarr[2]
+                          va = jd[p][f]['ltm/virtual-address/'+n]
+                          addr = va['address']
+                          destination = "/%s/%s/%s" % (p, f, addr)
+                      
+                      if addr.find(':') != -1: # ipv6
+                          destination = "%s.%s" % (destination, matches[3])
+                      else:
+                          destination = "%s:%s" % (destination, matches[3])
+                  v['destination'] = destination
+                  del(v['fullPath'])
+                  del(v['generation'])
+                  del(v['selfLink'])
+                  out[pn][fn][rn] = v
+              elif rn.find('ltm/virtual-address/') == 0:
+                      va = jd[pn][fn][rn]
+                      addr = va['address']
+                      va['name'] = addr
+                      del(va['fullPath'])
+                      del(va['generation'])
+                      del(va['selfLink'])
+                      out[pn][fn]['ltm/virtual-address/'+addr] = va
+              else:
+                  out[pn][fn][rn] = jd[pn][fn][rn]
+
+  with open(sys.argv[1]+"-updated", "w") as fw:         
+      json.dump(out, fw, indent=4)
   ```
 
 * [f5-tool-deploy-rest](https://gitee.com/zongzw/f5-tool-deploy-rest):
