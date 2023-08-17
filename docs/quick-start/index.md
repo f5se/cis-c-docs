@@ -267,13 +267,40 @@ WebUI上的配置项在Network -> Routes下。
 
 ### Calico网络
 
+前置条件：请确定BIG-IP具有Routing Bundle 授权:
+
+```shell
+# tmsh show sys license
+
+...
+
+Active Modules
+...
+    Routing Bundle    # <- here
+        # 否则会报：
+        # Dynamic routing is not enabled in route domain 0
+...
+```
+
 注意： 检查相应的self IP 地址中，Port Lockdown 设置为 “Allow All” 或者添加上TCP custom port 端口179。
 
   - BIG-IP侧开启BGP
   
     方式1：
     
-    在BIG-IP WebUI上，导航至Network -> Route domain. 进入 Route Domain 0配置页面中，选中BGP将其移入到enabled列表中。 然后ssh 登录到BIGIP上，执行：
+    在BIG-IP WebUI上，导航至Network -> Route domain. 进入 Route Domain 0配置页面中，选中BGP将其移入到enabled列表中。 
+
+    方式2：
+
+    在BIG-IP TMSH中，执行：
+
+    ```shell
+    $ tmsh modify sys db tmrouted.tmos.routing value enable
+    ```
+
+    注意，两种方式互斥，只能选择其中一种开启BIG-IP的BGP路由功能。
+
+    然后ssh 登录到BIGIP上，执行以下imish命令添加bgp neighbor，每个k8s node 都是neighbor成员：
 
     ```
     imish
@@ -287,16 +314,6 @@ WebUI上的配置项在Network -> Routes下。
     write
     end
     ```
-
-    方式2：
-
-    在BIG-IP TMSH中，执行：
-
-    ```shell
-    $ tmsh modify sys db tmrouted.tmos.routing value enable
-    ```
-
-    注意，两种方式互斥，只能选择其中一种开启BIG-IP的BGP路由功能。
 
   - K8S侧建立BIG-IP的BGP Peer节点：
 
