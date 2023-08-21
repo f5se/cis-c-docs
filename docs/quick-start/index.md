@@ -480,7 +480,7 @@ Cilium vxlan模式下，我们需要在BIG-IP侧创建相同的vxlan tunnel，�
   VNI 2 是 Cilium 的保留ID。
 
   ```shell
-  $ tmsh create net tunnels tunnel flannel_vxlan key 2 profile fl-vxlan local-address 10.169.72.34
+  $ tmsh create net tunnels tunnel fl-tunnel key 2 profile fl-vxlan local-address 10.169.72.34
   ```
 
 * tunnel 静态FDB 信息为0a:0a:0x:0x:0x:0x的形式，其中0x:0x:0x:0x部分为K8S各node节点16进制的IP地址。
