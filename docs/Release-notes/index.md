@@ -6,6 +6,20 @@
 
 *如有源码需求，可联系F5支持人员，获取源码zip文件。*
 
+## Release: **2.14.9-20230901**
+
+### Docker Image
+
+[f5devcentral/k8s-bigip-ctlr-c:2.14.9-20230901](https://hub.docker.com/r/f5devcentral/k8s-bigip-ctlr-c)
+
+[f5devcentral/cis-c-as3-parser:latest](https://hub.docker.com/r/f5devcentral/cis-c-as3-parser)
+
+### Release Notes
+
+* 优化已下发资源持久化性能。[commit](https://gitlab.f5net.com/cis-c/f5-kic/-/commit/3d77a73e45d1117a6f20ddc2b4d9a5e8b82d1622)
+* 修复Flannel VXLAN模式下的ARP创建、删除异常。[commit](https://gitlab.f5net.com/cis-c/f5-kic/-/commit/ee0f269c3a2468b306889bb8917f837184186653)
+* 增强DevOps：/dumps中增加启动时间标记[commit](https://gitlab.f5net.com/cis-c/f5-kic/-/commit/d4d206a30a77211ba156aa1cb1c4dfd187a99196)和事件队列状态[commit](https://gitlab.f5net.com/cis-c/f5-kic/-/commit/3d77a73e45d1117a6f20ddc2b4d9a5e8b82d1622)
+
 ## Release: **2.14.8-20230811**
 
 ### Docker Image
