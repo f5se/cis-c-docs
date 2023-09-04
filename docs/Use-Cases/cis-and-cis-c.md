@@ -20,7 +20,7 @@
     
     > 提示1：如果您从低于`2.9.1-20220831`（含）升级到更新版本CIS-C，CIS-C会自动将已写入`/Common`partition下的ARP条目修改到`cis-c-tenant`下，`cis-c-tenant`由CIS-C启动时自动创建(当发现其不存在时)。目前，该partition没有参数化；该partition依旧可用于下发用户配置，但不同于其他partition，在删除配置时，它不会被删除，请**尽量**避开此partition下发用户配置。
     
-    > 提示2：对于CIS-C低于或等于`2.9.1-20220831`的版本，您也可以选择修改CIS的默认ARP写入partition来避免冲突问题，例如，将启动设置`--flannel-name=/Common/flannel_vxlan`修改为`--flannel-name=/k8s/flannel_vxlan`，则相应ARP条目会写入到k8s partition下（k8s是一个提前手工建立好的partition）。此操作在生产环境操作需谨慎。 在本文以下的案例中使用的是即是修改CIS的参数方式。
+    > 提示2：对于CIS-C低于或等于`2.9.1-20220831`的版本，您也可以选择修改CIS的默认ARP写入partition来避免冲突问题，例如，将启动设置`--flannel-name=/Common/fl-tunnel`修改为`--flannel-name=/k8s/fl-tunnel`，则相应ARP条目会写入到k8s partition下（k8s是一个提前手工建立好的partition）。此操作在生产环境操作需谨慎。 在本文以下的案例中使用的是即是修改CIS的参数方式。
 
 * 非Overlay CNI环境或CIS与CIS-C对接不同BIG-IP场景时，无考虑上述静态ARP问题以及目标partition问题
 
@@ -175,7 +175,7 @@ data:
         - --insecure=true
         - --log-level=INFO
         - --http-listen-address=0.0.0.0:9113
-        - --flannel-name=/k8s/flannel_vxlan
+        - --flannel-name=/k8s/fl-tunnel
 ```
 
 
@@ -189,7 +189,7 @@ data:
         - --bigip-password=$(BIGIP_PASSWORD)
         - --bigip-url=https://172.16.20.205
         - --log-level=debug
-        - --flannel-name=flannel_vxlan
+        - --flannel-name=fl-tunnel
         - --namespace=cis-c-hub
         - --hub-mode=true
         - --ignore-service-port
@@ -350,7 +350,7 @@ data:
         - --insecure=true
         - --log-level=INFO
         - --http-listen-address=0.0.0.0:9113
-        - --flannel-name=/k8s/flannel_vxlan
+        - --flannel-name=/k8s/fl-tunnel
 ```
 
 
@@ -364,7 +364,7 @@ data:
         - --bigip-password=$(BIGIP_PASSWORD)
         - --bigip-url=https://172.16.20.205
         - --log-level=debug
-        - --flannel-name=flannel_vxlan
+        - --flannel-name=fl-tunnel
         - --namespace=as3-1 <<<<< as3-1 namespace
         - --hub-mode=false  <<<<< 非hub模式
         - --ignore-service-port
