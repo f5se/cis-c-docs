@@ -79,7 +79,13 @@ markdown_extensions:
 
 nav:
   - 主页: index.md
-  - 版本发布: Release-notes/index.md
+  - 版本发布:
+    - 当前版本: Release-notes/index.md
+    - v2.13: Release-notes/v2.13.md
+    - v2.12: Release-notes/v2.12.md
+    - v2.11: Release-notes/v2.11.md
+    - v2.10: Release-notes/v2.10.md
+    - v2.9: Release-notes/v2.9.md
   - 快速入门:
     - 准备工作: quick-start/index.md
     - 下载与安装: quick-start/installation.md
