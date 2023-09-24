@@ -6,18 +6,19 @@
 
 *如有源码需求，可联系F5支持人员，获取源码zip文件。*
 
-## Release: **2.14.10-20230919**
+## Release: **2.14.10-20230924**
 
 ### Docker Image
 
-[f5devcentral/k8s-bigip-ctlr-c:2.14.10-20230919](https://hub.docker.com/r/f5devcentral/k8s-bigip-ctlr-c)
+[f5devcentral/k8s-bigip-ctlr-c:2.14.10-20230924](https://hub.docker.com/r/f5devcentral/k8s-bigip-ctlr-c)
 
 [f5devcentral/cis-c-as3-parser:latest](https://hub.docker.com/r/f5devcentral/cis-c-as3-parser)
 
 ### Release Notes
 
-* 性能优化：批量处理事件队列中的node和endpoints事件(commits: [1](https://gitlab.f5net.com/cis-c/f5-kic/-/commit/89fe51fc7c148ea901c8065d31dccc3947956eef),[2](https://gitlab.f5net.com/cis-c/f5-kic/-/commit/32d6585761e96438acf08a89a7864e8f6918e45c),[3](https://gitlab.f5net.com/cis-c/f5-kic/-/commit/0d0741159ec4a576a3cdfffa5a109bcac32fa0ee),[4](https://gitlab.f5net.com/cis-c/f5-kic/-/commit/6d2d9bcabc9ef0756828aad49982aac85c5f0a2d))。
+* 性能优化：批量处理事件队列中的node和endpoints事件，并发多线程获取既有资源列表(commits: [1](https://gitlab.f5net.com/cis-c/f5-kic/-/commit/89fe51fc7c148ea901c8065d31dccc3947956eef),[2](https://gitlab.f5net.com/cis-c/f5-kic/-/commit/32d6585761e96438acf08a89a7864e8f6918e45c),[3](https://gitlab.f5net.com/cis-c/f5-kic/-/commit/0d0741159ec4a576a3cdfffa5a109bcac32fa0ee),[4](https://gitlab.f5net.com/cis-c/f5-kic/-/commit/6d2d9bcabc9ef0756828aad49982aac85c5f0a2d),[5](https://gitlab.f5net.com/cis-c/f5-kic/-/commit/3da6eacef8abf5f40e8232635b72810663f9cc02))。
 * 修复Flannel VXLAN模式下的ARP删除异常(commits: [1](https://gitlab.f5net.com/cis-c/f5-kic/-/commit/077eb8c502b7066f7ba5a0729f6a506cf5a93d2b),[2](https://gitlab.f5net.com/cis-c/f5-kic/-/commit/220cb7fda4392ddb570965602a1df196fb851a33))。
+
 ## Release: **2.14.9-20230901**
 
 ### Docker Image
