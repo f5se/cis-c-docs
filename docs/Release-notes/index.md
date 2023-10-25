@@ -6,6 +6,22 @@
 
 *如有源码需求，可联系F5支持人员，获取源码zip文件。*
 
+
+## Release: **2.14.11-20231025**
+
+### Docker Image
+
+[f5devcentral/k8s-bigip-ctlr-c:2.14.11-20231025](https://hub.docker.com/r/f5devcentral/k8s-bigip-ctlr-c)
+
+[f5devcentral/cis-c-as3-parser:latest](https://hub.docker.com/r/f5devcentral/cis-c-as3-parser)
+
+### Release Notes
+
+* 增强fastL4支持，支持预定义的fastL4 profile([issue](https://github.com/f5se/cis-c-docs/issues/76), [commit](https://gitlab.f5net.com/cis-c/f5-kic/-/commit/b24cada2badd4bd413833283594d8822eff29ffe))。
+* 优化/dumps API实现：增加2级url访问能力，例如：/dumps/cmdflags([commit](https://gitlab.f5net.com/cis-c/f5-kic/-/commit/75d6205d92a4d04ede788ef0f0b1e100a5e04c25))。
+* 修复BIG-IP不可达时，资源获取失败而导致的退出问题([commit](https://gitlab.f5net.com/cis-c/f5-kic/-/commit/29a7d3c51be4655c16a08e64bfaa5c92db3a763c))。
+* 修复flannel host-gw CNI模式下的路由下发异常([commit](https://gitlab.f5net.com/cis-c/f5-kic/-/commit/b24cada2badd4bd413833283594d8822eff29ffe))。
+
 ## Release: **2.14.10-20230924**
 
 ### Docker Image
