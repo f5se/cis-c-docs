@@ -11,9 +11,18 @@
 
 ### Docker Image
 
+AMD64:
+
 [f5devcentral/k8s-bigip-ctlr-c:2.14.11-20231025](https://hub.docker.com/r/f5devcentral/k8s-bigip-ctlr-c)
 
+
 [f5devcentral/cis-c-as3-parser:latest](https://hub.docker.com/r/f5devcentral/cis-c-as3-parser)
+
+ARM64: 
+
+[f5devcentral/k8s-bigip-ctlr-c:arm64v8-2.14.11-20231105](https://hub.docker.com/r/f5devcentral/k8s-bigip-ctlr-c)
+
+[f5devcentral/cis-c-as3-parser:latest-arm64](https://hub.docker.com/r/f5devcentral/cis-c-as3-parser)
 
 ### Release Notes
 
