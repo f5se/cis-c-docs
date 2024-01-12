@@ -34,6 +34,8 @@ Usage of /f5-kic-linux:
     	Optional, directory that contains the BIG-IP username, password, and/orurl files. To be used instead of username, password, and/or url arguments.
   -dry-run
     	Optional, run with dry-run mode to skip the startup event handling, used in CIS to CIS-C migration usecase
+  -extended-clusters string
+    	Optional, the secret's namespace/name which contains extended clusters' information
   -flannel-name string
     	Optional, if not default, BigIP Flannel VxLAN Tunnel name, i.e. fl-tunnel
   -flannel-name-v6 string
@@ -46,6 +48,8 @@ Usage of /f5-kic-linux:
     	Optional, use the 1st targetPort when Pool's servicePort matching fails
   -kube-config string
     	Required if runs as non-inCluster mode, kubernetes configuration i.e. ~/.kube/config
+  -leader-election
+    	Optional, determines whether or not to use leader election when starting the manager, used only in High Availability(HA) mode
   -log-level string
     	Optional, logging level: trace debug info warn error (default "info")
   -namespace value
@@ -57,6 +61,7 @@ Usage of /f5-kic-linux:
   -sys-save-interval int
     	Optional, the interval to run 'tmsh save sys config' for resource persistence, in seconds (default 3600)
 ```
+
 
 ## 启动参数解析
 
@@ -98,6 +103,10 @@ CIS-C安装部署方式，可参见“[下载与安装](../quick-start/installat
 
   具体使用方法见[动态参数调整](#动态参数调整)部分。
 
+* `--extended-clusters string`
+
+  可选，当指定该参数时，CIS-C运行于多集群模式，该参数指定CIS-C所在集群的Secret namespace/name, 该参数的详细配置方法，请参见[多集群配置模式](../Use-Cases/multi-clusters.md#多集群模式的cis-c配置方式)。
+
 * `--flannel-name string`
 
   可选。默认值为`""`(空字符串)。
@@ -134,7 +143,11 @@ CIS-C安装部署方式，可参见“[下载与安装](../quick-start/installat
 
 * `--kube-config string`
 
-  集群外部署模式下，必选。k8s配置文件路径，例如：~/.kube/config
+  可选，集群外部署模式下k8s配置文件路径，例如：~/.kube/config，默认为空字符串，此时，CIS-C实例运行于InCluster模式。
+
+* `--leader-election`
+
+  可选，标记CIS-C运行于HA模式还是Standalone模式，配置细节请参考：[CIS-C HA配置](../Use-Cases/multi-clusters.md#多集群模式下cis-c的ha)。
 
 * `--log-level`
 

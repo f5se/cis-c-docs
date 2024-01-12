@@ -106,6 +106,7 @@ nav:
     - IPV6发布: Use-Cases/ipv6.md
     - CIS与CIS-C混合部署: Use-Cases/cis-and-cis-c.md
     - 优雅下线业务Pod的方法: Use-Cases/k8s-graceful-shutdown.md
+    - 多集群模式: Use-Cases/multi-clusters.md
   - 运维与排错: 
     - 常见问题: Operation-and-troubleshooting/ki.md
     - 迁移: Operation-and-troubleshooting/migration.md
