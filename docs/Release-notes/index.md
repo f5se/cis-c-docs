@@ -7,6 +7,34 @@
 *如有源码需求，可联系F5支持人员，获取源码zip文件。*
 
 
+## Release **2.15.1-20240113**
+
+### Docker Image
+
+AMD64:
+
+[f5devcentral/k8s-bigip-ctlr-c:2.15.1-20240113](https://hub.docker.com/r/f5devcentral/k8s-bigip-ctlr-c)
+
+[f5devcentral/cis-c-as3-parser:latest-amd64-v20231221](https://hub.docker.com/r/f5devcentral/cis-c-as3-parser)
+
+ARM64:
+
+[f5devcentral/k8s-bigip-ctlr-c:arm64v8-2.15.1-20240113](https://hub.docker.com/r/f5devcentral/k8s-bigip-ctlr-c)
+
+[f5devcentral/cis-c-as3-parser:latest-arm64-v20240113](https://hub.docker.com/r/f5devcentral/cis-c-as3-parser)
+
+### Release Notes
+
+* 增加[多集群模式支持](../Use-Cases/multi-clusters.md)，包括：
+  * - 使用iRule和Weight方式控制多集群流量入口管理。
+  * - 使用`--extended-clusters` 监控多集群资源变化，使用单BIG-IP设备实现入口流量管理。
+  * - 使用`--leader-election` 基于BIG-IP竞争锁的CIS-C多集群HA部署模式，实现CIS-C配置能力高可用。
+* 增强CIS-C退出信号处理，保证退出前的资源持久化和回收([commit](https://gitlab.f5net.com/cis-c/f5-kic/-/commit/032761087849152cff151ba132a9c4becd75b967))。
+* 修复pool下发关联异常([commit](https://gitlab.f5net.com/cis-c/f5-kic/-/commit/6f535aa9587444bcdc589a0b1ef3d15ae5dee475))。
+* 修复ipv4/6 pool member下发异常([commit](https://gitlab.f5net.com/cis-c/f5-kic/-/commit/c0f1d1f41378c4fc926a41277503ce0395e59216))。
+* 修复CIS-C as3-parser 退出等待问题([commit](https://gitlab.f5net.com/cis-c/f5-kic/-/commit/1e0dc60320cc0765d41c06a719411e55447b6b1f))。
+
+
 ## Release: **2.14.11-20231025**
 
 ### Docker Image
