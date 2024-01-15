@@ -56,6 +56,7 @@ data:
 ```
 
 其中：
+
 * 各个集群`cluster1 cluster2 cluster3`的命名可以根据实际需要自行命名，相互之间不重复即可。在后文中，我们称集群名称为“键”，冒号后边部分为“值”，以便描述。
 * 集群命名即“键”会关系到各个集群中部署的应用在BIG-IP上下发后的名称后缀，例如，部署在cluster2中的serviceA对应在BIG-IP上的pool名称会类似于serviceA-cluster2，所以Secret中命名一旦确认后不建议修改，如果被修改，CIS-C重启后会重新下发相关集群的应用，赋予新的集群名称后缀。
 * `$(cat ../cluster1-kubeconfig | base64 -w 0)` 即“值”部分为cluster1 的kubeconfig内容，需要在shell中执行此部分命令得到base64编码内容后填入到此处。
